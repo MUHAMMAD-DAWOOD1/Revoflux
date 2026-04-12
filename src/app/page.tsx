@@ -17,7 +17,6 @@ export default function Home() {
       <Process />
       <Works />
       <Benefits />
-      {/* Pricing section removed as requested for 100% same but without pricing */}
       <Testimonials />
       <FAQ />
       <CTABanner />

@@ -10,7 +10,7 @@ export default function CTABanner() {
   const isInView = useInView(containerRef, { once: true, margin: "-100px" });
 
   return (
-    <section className="relative w-full py-32 bg-black overflow-hidden">
+    <section className="relative w-full py-32 bg-black overflow-hidden border-t border-white/5">
       <div className="container mx-auto px-6 max-w-[1240px]">
         <div 
           ref={containerRef}
@@ -44,7 +44,7 @@ export default function CTABanner() {
             style={{ willChange: "transform, opacity" }}
             className="font-body text-[17px] md:text-[21px] text-black/60 mb-12 max-w-[560px] leading-relaxed relative z-10"
           >
-            Join 50+ businesses automating their operations and lead engines with our custom AI frameworks.
+            Join forward-thinking businesses automating their operations and lead engines with our custom AI frameworks.
           </motion.p>
 
           <motion.div
@@ -53,13 +53,19 @@ export default function CTABanner() {
             viewport={{ once: false, amount: 0.5 }}
             transition={{ duration: 1, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
             style={{ willChange: "transform, opacity" }}
-            className="relative z-10"
+            className="flex flex-col sm:flex-row gap-4 relative z-10 w-full sm:w-auto"
           >
             <Link 
-              href="/contact"
-              className="px-10 py-5 bg-black text-white font-bold text-[17px] rounded-2xl flex items-center gap-2 group hover:scale-105 transition-all"
+              href="/contact#book-call"
+              className="px-10 py-5 bg-black text-white font-bold text-[17px] rounded-2xl flex items-center justify-center gap-2 group hover:scale-105 transition-all shadow-xl"
             >
-              Get in touch <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
+              Book a free call <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
+            </Link>
+            <Link 
+              href="/#work"
+              className="px-10 py-5 border border-black/20 text-black font-bold text-[17px] rounded-2xl flex items-center justify-center gap-2 hover:bg-black/5 transition-all"
+            >
+              View work
             </Link>
           </motion.div>
 
@@ -72,7 +78,7 @@ export default function CTABanner() {
           >
             <span className="text-black text-xs">✦</span>
             <span className="font-mono text-[11px] text-black/40 uppercase tracking-widest">
-              Limited spots available for Q3
+              Limited onboarding spots available this month
             </span>
           </motion.div>
         </div>

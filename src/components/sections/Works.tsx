@@ -6,23 +6,23 @@ import { ArrowUpRight } from "lucide-react";
 
 const works = [
   {
-    title: "AI-driven forecasting cut inventory waste by 40% for TrailForge",
-    description: "TrailForge struggled with unpredictable demand. We integrated automated predictive models into their supply chain, drastically reducing overstock and optimizing logistics.",
-    impact: ["• 80% Error reduction", "• 30% Faster Delivery", "• 60+ Hours Saved"],
+    title: "AI-driven forecasting cut inventory waste by 40% for a U.S. e-commerce brand",
+    description: "A U.S.-based e-commerce company struggled with unpredictable demand cycles. We integrated automated predictive models into their supply chain, drastically reducing overstock and optimizing logistics.",
+    impact: ["• 80% Error Reduction", "• 30% Faster Delivery", "• 60+ Hours Saved"],
     client: "REVOFLUX",
     image: "/suitcase.jpg",
   },
   {
-    title: "Automated threat detection halted 99% of fraud attempts",
-    description: "Premium Bank needed real-time security. Our custom AI monitoring system identifies and blocks fraudulent transactions instantly with zero latency.",
-    impact: ["• 99% Fraud prevented", "• Zero downtime", "• Real-time alerts"],
+    title: "Automated threat detection halted 99% of fraud attempts for a financial services firm",
+    description: "A mid-sized financial services firm needed real-time transaction security. Our custom AI monitoring system identifies and blocks fraudulent transactions instantly with zero latency.",
+    impact: ["• 99% Fraud Prevented", "• Zero Downtime", "• Real-time Alerts"],
     client: "REVOFLUX",
     image: "/credit-card.jpg",
   },
   {
-    title: "Smart logistics routing improved warehouse efficiency by 50%",
-    description: "Heavy Lift Inc. faced severe bottlenecks. We deployed AI pathfinding algorithms to optimize forklift routes and daily schedules intelligently.",
-    impact: ["• 50% Efficiency boost", "• 2x Output Volume", "• 45+ Hours Saved"],
+    title: "Smart logistics routing improved warehouse efficiency by 50% for a freight company",
+    description: "A regional freight and warehousing company faced severe operational bottlenecks. We deployed AI pathfinding algorithms to optimize routes and daily schedules intelligently.",
+    impact: ["• 50% Efficiency Boost", "• 2x Output Volume", "• 45+ Hours Saved"],
     client: "REVOFLUX",
     image: "/forklift.jpg",
   }

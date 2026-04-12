@@ -1,25 +1,76 @@
 "use client";
 
 import { useState } from "react";
-import { Check, Calendar, Mail, Globe, Lock } from "lucide-react";
+import { Check, Mail, Globe, Lock, ChevronDown, Loader2, ArrowRight } from "lucide-react";
+import { InlineWidget } from "react-calendly";
 
 export default function ContactPage() {
-  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
+  const [formData, setFormData] = useState({
+    fullName: "",
+    email: "",
+    company: "",
+    service: "Workflow Automation",
+    message: "",
+  });
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    // Simulate backend submission wrapper
-    setIsSubmitted(true);
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleContactFormSubmit = async () => {
+    if (!formData.fullName || !formData.email || !formData.message) {
+      alert("Please fill in all required fields.");
+      return;
+    }
+
+    setStatus("loading");
+
+    try {
+      const response = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify({
+          access_key: "4e1a676b-313f-4ae0-ae4b-9394fedd4404",
+          name: formData.fullName,
+          email: formData.email,
+          company: formData.company,
+          service: formData.service,
+          message: formData.message,
+          subject: `New Contact Form Submission from ${formData.fullName}`,
+        }),
+      });
+
+      const result = await response.json();
+      if (result.success) {
+        setStatus("success");
+        setFormData({
+          fullName: "",
+          email: "",
+          company: "",
+          service: "Workflow Automation",
+          message: "",
+        });
+      } else {
+        setStatus("error");
+      }
+    } catch (error) {
+      console.error("Submission error:", error);
+      setStatus("error");
+    }
   };
 
   return (
-    <div className="flex flex-col min-h-screen bg-background pt-16">
+    <div className="flex flex-col min-h-screen bg-black pt-16 selection:bg-accent selection:text-black">
       
-      {/* PAGE HERO (40vh) */}
-      <section className="relative w-full min-h-[40vh] flex flex-col items-center justify-center text-center overflow-hidden border-b border-border">
-        {/* Animated Grid identical to homepage logic */}
+      {/* PAGE HERO */}
+      <section className="relative w-full min-h-[40vh] flex flex-col items-center justify-center text-center overflow-hidden border-b border-white/5">
         <div 
-          className="absolute inset-0 z-0 opacity-40 pointer-events-none"
+          className="absolute inset-0 z-0 opacity-20 pointer-events-none"
           style={{
             backgroundImage: `
               linear-gradient(to right, #27272A 1px, transparent 1px),
@@ -29,192 +80,217 @@ export default function ContactPage() {
           }}
         ></div>
 
-        {/* Ambient Radial Accent Glow */}
-        <div 
-          className="absolute z-0 w-[500px] h-[500px] md:w-[700px] md:h-[700px] rounded-full bg-accent opacity-[0.06] blur-[80px] pointer-events-none"
-        ></div>
+        <div className="absolute z-0 w-[500px] h-[500px] md:w-[700px] md:h-[700px] rounded-full bg-accent opacity-[0.08] blur-[100px] pointer-events-none"></div>
 
-        {/* Subtle noise texturing overlay */}
-        <div 
-          className="absolute inset-0 z-0 opacity-5 pointer-events-none mix-blend-overlay"
-          style={{
-            backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")`,
-          }}
-        ></div>
-
-        <div className="relative z-10 max-w-3xl px-4 animate-[fadeUp_0.8s_ease-out]">
-          <h1 className="text-[44px] md:text-[64px] font-display font-[800] leading-[1.1] tracking-tight text-white mb-6">
-            Let's Build Something.
+        <div className="relative z-10 max-w-3xl px-6 animate-in fade-in slide-in-from-bottom-4 duration-1000">
+          <h1 className="text-[48px] md:text-[68px] lg:text-[76px] font-display font-[900] leading-[1.05] tracking-tight text-white mb-6 uppercase">
+            Let's build the <span className="text-accent underline decoration-accent/30 underline-offset-8">future</span>.
           </h1>
-          <p className="text-[18px] md:text-[20px] font-body text-text-secondary">
-            Tell us about your business and what you want to automate.
+          <p className="text-[18px] md:text-[21px] font-body text-white/50 max-w-2xl mx-auto leading-relaxed">
+            Choose the method that works best for you. Book a call directly or send us a detailed message.
           </p>
         </div>
       </section>
 
-      {/* MAIN CONTENT 60/40 Split Frame */}
-      <section className="py-20 md:py-32 container mx-auto px-4 max-w-[1100px] relative z-10 flex-grow">
-        <div className="grid grid-cols-1 lg:grid-cols-[60%_1fr] gap-16 lg:gap-20">
+      {/* MAIN CONTENT V-STACK */}
+      <section className="py-20 md:py-32 container mx-auto px-6 max-w-[900px] relative z-10 flex-grow">
+        <div className="space-y-24">
           
-          {/* LEFT COLUMN - FORM ENGINE */}
-          <div className="animate-[fadeUp_1s_ease-out]">
-            {!isSubmitted ? (
-              <form onSubmit={handleSubmit} className="flex flex-col gap-5 bg-background">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                  <div className="flex flex-col gap-2">
-                    <label className="text-text-secondary text-[13px] font-medium ml-1">Full Name</label>
+          {/* CALENDLY SECTION (TOP) */}
+          <div id="book-call" className="animate-in fade-in slide-in-from-bottom-6 duration-1000 delay-200">
+            <div className="text-center mb-12">
+               <h2 className="text-[32px] md:text-[44px] font-display font-[800] text-white tracking-tight mb-4">Book a Free Strategy Call</h2>
+               <p className="text-white/50 text-[17px] md:text-[19px]">30 minutes. No pressure. Just a conversation about your goals.</p>
+            </div>
+            
+            <div className="bg-[#0a0a0c] border border-white/5 rounded-[32px] overflow-hidden shadow-2xl relative">
+              <InlineWidget 
+                url="https://calendly.com/revoflux-ai/30min?hide_branding=1"
+                styles={{
+                  height: '1000px',
+                  width: '100%'
+                }}
+                pageSettings={{
+                  backgroundColor: '000000',
+                  hideEventTypeDetails: false,
+                  hideLandingPageDetails: false,
+                  primaryColor: '8b5cf6',
+                  textColor: 'ffffff'
+                }}
+              />
+            </div>
+          </div>
+
+          {/* DIVIDER */}
+          <div className="relative py-4">
+            <div className="absolute inset-0 flex items-center">
+              <div className="w-full border-t border-white/5"></div>
+            </div>
+            <div className="relative flex justify-center text-[13px] font-mono uppercase tracking-[0.3em]">
+              <span className="bg-black px-8 text-white/30">Or send us a message</span>
+            </div>
+          </div>
+
+          {/* CONTACT FORM SECTION (BOTTOM) */}
+          <div className="max-w-[700px] mx-auto w-full animate-in fade-in slide-in-from-bottom-8 duration-1000 delay-400">
+            {status === "success" ? (
+              <div className="bg-white/5 border border-white/10 rounded-[32px] p-10 md:p-16 text-center animate-in zoom-in-95 duration-500 shadow-2xl">
+                <div className="w-20 h-20 bg-green-500/20 rounded-full flex items-center justify-center mx-auto mb-8">
+                  <Check size={40} className="text-green-500" />
+                </div>
+                <h3 className="text-2xl font-bold text-white mb-4">Message sent!</h3>
+                <p className="text-white/60 text-lg">We'll get back to you within 24 hours.</p>
+                <button 
+                  onClick={() => setStatus("idle")}
+                  className="mt-8 text-accent font-bold hover:underline"
+                >
+                  Send another message
+                </button>
+              </div>
+            ) : (
+              <div className="space-y-8 bg-[#0a0a0c]/50 p-8 md:p-12 border border-white/5 rounded-[32px]">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="space-y-2">
+                    <label className="text-white/60 text-sm font-medium ml-1 uppercase tracking-wider">Full Name *</label>
                     <input 
                       type="text" 
-                      required 
-                      className="bg-[#18181B] border border-[#27272A] rounded-xl px-5 py-4 text-text-primary text-[15px] focus:border-accent/80 focus:ring-1 focus:ring-accent/30 focus:outline-none transition-all placeholder:text-[#52525B]"
-                      placeholder="John Doe"
+                      name="fullName"
+                      value={formData.fullName}
+                      onChange={handleChange}
+                      placeholder="e.g. Alex Carter"
+                      className="w-full bg-white/5 border border-white/10 rounded-2xl px-5 py-4 text-white placeholder:text-white/20 focus:outline-none focus:border-accent/50 transition-all font-body"
                     />
                   </div>
-                  <div className="flex flex-col gap-2">
-                    <label className="text-text-secondary text-[13px] font-medium ml-1">Work Email</label>
+                  <div className="space-y-2">
+                    <label className="text-white/60 text-sm font-medium ml-1 uppercase tracking-wider">Email Address *</label>
                     <input 
                       type="email" 
-                      required 
-                      className="bg-[#18181B] border border-[#27272A] rounded-xl px-5 py-4 text-text-primary text-[15px] focus:border-accent/80 focus:ring-1 focus:ring-accent/30 focus:outline-none transition-all placeholder:text-[#52525B]"
-                      placeholder="john@company.com"
+                      name="email"
+                      value={formData.email}
+                      onChange={handleChange}
+                      placeholder="e.g. alex@company.com"
+                      className="w-full bg-white/5 border border-white/10 rounded-2xl px-5 py-4 text-white placeholder:text-white/20 focus:outline-none focus:border-accent/50 transition-all font-body"
                     />
                   </div>
                 </div>
 
-                <div className="flex flex-col gap-2 group">
-                  <label className="text-text-secondary text-[13px] font-medium ml-1">Company / Business Type</label>
+                <div className="space-y-2">
+                  <label className="text-white/60 text-sm font-medium ml-1 uppercase tracking-wider">Company Name</label>
                   <input 
                     type="text" 
-                    required 
-                    className="bg-[#18181B] border border-[#27272A] rounded-xl px-5 py-4 text-text-primary text-[15px] focus:border-accent/80 focus:ring-1 focus:ring-accent/30 focus:outline-none transition-all placeholder:text-[#52525B]"
-                    placeholder="E-commerce Store"
+                    name="company"
+                    value={formData.company}
+                    onChange={handleChange}
+                    placeholder="e.g. Stark Industries"
+                    className="w-full bg-white/5 border border-white/10 rounded-2xl px-5 py-4 text-white placeholder:text-white/20 focus:outline-none focus:border-accent/50 transition-all font-body"
                   />
                 </div>
 
-                <div className="flex flex-col gap-2">
-                  <label className="text-text-secondary text-[13px] font-medium ml-1">What do you want to automate?</label>
-                  <textarea 
-                    rows={5} 
-                    required 
-                    className="bg-[#18181B] border border-[#27272A] rounded-xl px-5 py-4 text-text-primary text-[15px] focus:border-accent/80 focus:ring-1 focus:ring-accent/30 focus:outline-none transition-all resize-none placeholder:text-[#52525B] leading-relaxed"
-                    placeholder="We spend 10 hours a week inputting leads into our CRM. Seeking a streamlined architecture..."
-                  />
-                </div>
-
-                <div className="flex flex-col gap-2">
-                  <label className="text-text-secondary text-[13px] font-medium ml-1">Monthly Budget</label>
+                <div className="space-y-2">
+                  <label className="text-white/60 text-sm font-medium ml-1 uppercase tracking-wider">Service Interested In</label>
                   <div className="relative">
                     <select 
-                      required
-                      defaultValue=""
-                      className="w-full bg-[#18181B] border border-[#27272A] rounded-xl px-5 py-4 text-text-primary text-[15px] focus:border-accent/80 focus:ring-1 focus:ring-accent/30 focus:outline-none transition-all appearance-none cursor-pointer"
+                      name="service"
+                      value={formData.service}
+                      onChange={handleChange}
+                      className="w-full bg-white/5 border border-white/10 rounded-2xl px-5 py-4 text-white appearance-none focus:outline-none focus:border-accent/50 transition-all cursor-pointer font-body font-medium"
                     >
-                      <option value="" disabled className="text-text-muted">Select an option</option>
-                      <option value="under_1000">Under $1,000</option>
-                      <option value="1000_3000">$1,000 – $3,000</option>
-                      <option value="3000_10000">$3,000 – $10,000</option>
-                      <option value="10000_plus">$10,000+</option>
+                      <option value="Workflow Automation">Workflow Automation</option>
+                      <option value="AI Assistant">AI Assistant</option>
+                      <option value="Sales Automation">Sales Automation</option>
+                      <option value="Custom AI Project">Custom AI Project</option>
                     </select>
-                    <div className="absolute right-5 top-1/2 -translate-y-1/2 pointer-events-none">
-                      <ChevronDownIcon size={18} className="text-text-secondary" />
-                    </div>
+                    <ChevronDown size={20} className="absolute right-5 top-1/2 -translate-y-1/2 text-white/40 pointer-events-none" />
                   </div>
                 </div>
 
+                <div className="space-y-2">
+                  <label className="text-white/60 text-sm font-medium ml-1 uppercase tracking-wider">Your Message *</label>
+                  <textarea 
+                    name="message"
+                    value={formData.message}
+                    onChange={handleChange}
+                    rows={6}
+                    placeholder="Tell us about your project infrastructure needs..."
+                    className="w-full bg-white/5 border border-white/10 rounded-2xl px-5 py-4 text-white placeholder:text-white/20 focus:outline-none focus:border-accent/50 transition-all resize-none leading-relaxed font-body"
+                  />
+                </div>
+
+                {status === "error" && (
+                  <div className="p-4 bg-red-500/10 border border-red-500/20 rounded-xl text-red-500 text-sm font-mono">
+                    Something went wrong. Please try again.
+                  </div>
+                )}
+
                 <button 
-                  type="submit"
-                  className="w-full bg-accent text-black font-bold text-lg rounded-xl py-4 mt-4 hover:brightness-[1.15] shadow-[0_0_15px_rgba(168,255,62,0.15)] hover:shadow-[0_0_25px_rgba(168,255,62,0.35)] transition-all flex items-center justify-center gap-2 group"
+                  onClick={handleContactFormSubmit}
+                  disabled={status === "loading"}
+                  className="w-full bg-accent text-black font-extrabold h-16 rounded-2xl flex items-center justify-center gap-2 hover:brightness-110 active:scale-[0.98] transition-all disabled:opacity-50 disabled:pointer-events-none group shadow-[0_0_20px_rgba(139,92,246,0.1)]"
                 >
-                  Book a Strategy Call <span className="font-mono pt-0.5 group-hover:translate-x-1.5 transition-transform">→</span>
+                  {status === "loading" ? (
+                    <Loader2 size={24} className="animate-spin" />
+                  ) : (
+                    <>
+                      Send Message <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
+                    </>
+                  )}
                 </button>
-                <div className="text-center font-mono text-[12px] text-text-muted mt-2 flex items-center justify-center gap-2 opacity-80">
-                   <Lock size={12} className="text-text-secondary" /> We never spam. Replies within 24 hours.
+
+                <div className="flex items-center justify-center gap-2 text-white/20 text-xs font-mono uppercase tracking-[0.2em] pt-4 border-t border-white/5">
+                  <Lock size={12} /> Secure transmission · Response within 24hrs
                 </div>
-              </form>
-            ) : (
-              /* SUCCESS DRAW STATE DOM */
-              <div className="h-full min-h-[500px] flex flex-col items-center justify-center text-center bg-[#111113] border border-[#27272A] rounded-2xl p-10 animate-[fadeUp_0.5s_ease-out]">
-                <div className="w-24 h-24 rounded-full bg-[#09090B] border-2 border-[#27272A] flex items-center justify-center mb-8 relative shadow-inner overflow-hidden group">
-                   <div className="absolute inset-0 bg-accent/20 scale-0 animate-[scaleUp_0.4s_ease-out_0.2s_forwards]"></div>
-                   <svg className="w-12 h-12 text-accent relative z-10 animate-[drawCheck_0.6s_ease-out_0.4s_forwards] stroke-dasharray-[40] stroke-dashoffset-[40]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
-                     <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-                   </svg>
-                </div>
-                <h3 className="text-[28px] font-display font-bold text-white mb-3 tracking-tight">Message received.</h3>
-                <p className="text-[16px] font-body text-text-secondary">Expect a reply within 24 hours.</p>
               </div>
             )}
           </div>
 
-          {/* RIGHT COLUMN - CONTACT & DIRECTORY */}
-          <div className="flex flex-col max-w-[400px] animate-[fadeUp_1.2s_ease-out]">
-            <span className="text-[15px] font-body text-text-secondary mb-4 block ml-1">Or book directly:</span>
-            
-            {/* Calendly Interactive Block Mock */}
-            <div className="bg-[#18181B] border border-[#27272A] rounded-2xl p-8 md:p-10 mb-10 flex flex-col items-center justify-center text-center group shadow-xl">
-               <div className="w-16 h-16 bg-[#27272A] border border-[#3f3f46] rounded-full flex items-center justify-center mb-6 transition-transform group-hover:scale-110 duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] shadow-inner">
-                 <Calendar className="text-white opacity-80" size={24} />
+          {/* ADDITIONAL FOOTER INFO */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 pt-20 border-t border-white/5 animate-in fade-in duration-1000 delay-500">
+             <div className="space-y-6">
+               <h3 className="text-xl font-display font-bold text-white uppercase tracking-widest">Direct Contact</h3>
+               <div className="space-y-4">
+                 <a href="mailto:hello@revoflux.app" className="flex items-center gap-4 text-white/40 hover:text-accent transition-colors group">
+                   <div className="w-10 h-10 rounded-lg bg-white/5 flex items-center justify-center border border-white/10 transition-colors">
+                     <Mail size={18} />
+                   </div>
+                   <span className="text-[17px] font-medium font-body underline decoration-white/10 underline-offset-4">hello@revoflux.app</span>
+                 </a>
+                 <div className="flex items-center gap-4 text-white/40">
+                   <div className="w-10 h-10 rounded-lg bg-white/5 flex items-center justify-center border border-white/10">
+                     <Globe size={18} />
+                   </div>
+                   <span className="text-[17px] font-medium font-body underline decoration-white/10 underline-offset-4">Global Operations · Remote-First</span>
+                 </div>
                </div>
-               <h4 className="text-[20px] font-display font-semibold text-white mb-8 tracking-wide">Book a 30-min Call</h4>
-               <a href="#" rel="noopener noreferrer" className="px-6 py-3.5 border border-accent/40 text-accent hover:border-accent hover:bg-accent/10 font-bold rounded-xl transition-all w-full tracking-wide">
-                 Open Calendar
-               </a>
-            </div>
-
-            <hr className="border-[#27272A] mb-10" />
-
-            {/* Direct Contact Sub-links */}
-            <div className="flex flex-col gap-5 font-body text-[15px] text-text-secondary mb-10 pl-1">
-               <div className="flex items-center gap-4 hover:text-white transition-colors cursor-pointer group">
-                 <Mail size={18} className="text-text-muted transition-colors group-hover:text-accent" /> <a href="mailto:hello@revoflux.app">hello@revoflux.app</a>
-               </div>
-               <div className="flex items-center gap-4">
-                 <Globe size={18} className="text-text-muted" /> Remote · US · UK · AU · CA
-               </div>
-            </div>
-
-            {/* Verification Items list */}
-            <div className="flex flex-col gap-4 font-body text-[15px] text-text-primary pl-1">
-               <div className="flex items-center gap-3">
-                 <div className="w-5 h-5 rounded-full bg-accent/10 border border-accent/20 flex items-center justify-center shrink-0 shadow-[0_0_8px_rgba(168,255,62,0.1)]"><Check size={10} className="text-accent stroke-[3]"/></div>
-                 Response within 24 hours
-               </div>
-               <div className="flex items-center gap-3">
-                 <div className="w-5 h-5 rounded-full bg-accent/10 border border-accent/20 flex items-center justify-center shrink-0 shadow-[0_0_8px_rgba(168,255,62,0.1)]"><Check size={10} className="text-accent stroke-[3]"/></div>
-                 No pitch decks or upsells
-               </div>
-               <div className="flex items-center gap-3">
-                 <div className="w-5 h-5 rounded-full bg-accent/10 border border-accent/20 flex items-center justify-center shrink-0 shadow-[0_0_8px_rgba(168,255,62,0.1)]"><Check size={10} className="text-accent stroke-[3]"/></div>
-                 Free strategy session on first call
-               </div>
-            </div>
-
+             </div>
+             <div className="space-y-6">
+                <h3 className="text-xl font-display font-bold text-white uppercase tracking-widest">Why RevoFlux?</h3>
+                <div className="space-y-5">
+                   {[
+                     "Specialized AI Architecture",
+                     "Western Market Standards",
+                     "Scalable Automation Frameworks"
+                   ].map((item, i) => (
+                     <div key={i} className="flex items-center gap-3">
+                       <Check size={16} className="text-accent" />
+                       <span className="text-white/60 font-body">{item}</span>
+                     </div>
+                   ))}
+                </div>
+             </div>
           </div>
         </div>
       </section>
 
-      {/* Global CSS injections for scoped SVG drawings */}
-      <style dangerouslySetInnerHTML={{__html: `
-        @keyframes drawCheck {
-          to { stroke-dashoffset: 0; }
+      {/* Global CSS injections */}
+      <style jsx global>{`
+        @keyframes spin {
+          from { transform: rotate(0deg); }
+          to { transform: rotate(360deg); }
         }
-        @keyframes scaleUp {
-          from { transform: scale(0); opacity: 0; }
-          to { transform: scale(1); opacity: 1; }
+        .animate-spin {
+          animation: spin 1s linear infinite;
         }
-        @keyframes fadeUp {
-          from { opacity: 0; transform: translateY(15px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
-      `}} />
+      `}</style>
     </div>
-  );
-}
-
-function ChevronDownIcon(props: any) {
-  return (
-    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
-      <path d="m6 9 6 6 6-6"/>
-    </svg>
   );
 }

@@ -1,7 +1,9 @@
 "use client";
 
-import Link from "next/image";
-import { Globe, Mail, Link as LinkIcon, MessageSquare } from "lucide-react";
+import Link from "next/link";
+import { MdEmail } from "react-icons/md";
+import { FaInstagram, FaFacebook, FaLinkedin } from "react-icons/fa";
+import { FaXTwitter } from "react-icons/fa6";
 
 export default function Footer() {
   return (
@@ -74,25 +76,50 @@ export default function Footer() {
           {/* Socials Column */}
           <div className="flex flex-col">
             <h4 className="text-white font-display font-bold text-[11px] mb-8 tracking-[0.2em] uppercase opacity-40">Follow Us</h4>
-            <div className="flex flex-col gap-4">
-              <div className="flex items-center gap-3 text-text-secondary hover:text-accent transition-all group cursor-pointer">
-                <div className="w-8 h-8 border border-white/10 rounded-lg flex items-center justify-center group-hover:border-accent/40 group-hover:bg-accent/5">
-                  <MessageSquare size={14} />
-                </div>
-                <span className="text-[11px] font-mono tracking-widest uppercase">Twitter</span>
-              </div>
-              <div className="flex items-center gap-3 text-text-secondary hover:text-accent transition-all group cursor-pointer">
-                <div className="w-8 h-8 border border-white/10 rounded-lg flex items-center justify-center group-hover:border-accent/40 group-hover:bg-accent/5">
-                  <LinkIcon size={14} />
-                </div>
-                <span className="text-[11px] font-mono tracking-widest uppercase">Instagram</span>
-              </div>
-              <div className="flex items-center gap-3 text-text-secondary hover:text-accent transition-all group cursor-pointer">
-                <div className="w-8 h-8 border border-white/10 rounded-lg flex items-center justify-center group-hover:border-accent/40 group-hover:bg-accent/5">
-                  <Globe size={14} />
-                </div>
-                <span className="text-[11px] font-mono tracking-widest uppercase">LinkedIn</span>
-              </div>
+            <div className="flex items-center gap-6">
+              <a 
+                href="mailto:revoflux.ai@gmail.com"
+                className="text-text-secondary hover:text-white transition-all duration-300"
+                title="Email"
+              >
+                <MdEmail size={20} />
+              </a>
+              <a 
+                href="https://instagram.com/revoflux" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="text-text-secondary hover:text-white transition-all duration-300"
+                title="Instagram"
+              >
+                <FaInstagram size={20} />
+              </a>
+              <a 
+                href="https://facebook.com/revoflux" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="text-text-secondary hover:text-white transition-all duration-300"
+                title="Facebook"
+              >
+                <FaFacebook size={20} />
+              </a>
+              <a 
+                href="https://www.linkedin.com/in/muhammad-dawood-dev" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="text-text-secondary hover:text-white transition-all duration-300"
+                title="LinkedIn"
+              >
+                <FaLinkedin size={20} />
+              </a>
+              <a 
+                href="https://x.com/revoflux" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="text-text-secondary hover:text-white transition-all duration-300"
+                title="X (Twitter)"
+              >
+                <FaXTwitter size={20} />
+              </a>
             </div>
           </div>
         </div>
