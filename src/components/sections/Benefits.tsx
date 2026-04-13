@@ -38,7 +38,7 @@ const benefits = [
 
 export default function Benefits() {
   return (
-    <section className="relative w-full py-32 bg-black overflow-hidden">
+    <section id="about" className="relative w-full py-32 bg-black overflow-hidden">
       <div className="container mx-auto px-6 max-w-[1240px]">
         {/* Header */}
         <div className="max-w-2xl mb-24">

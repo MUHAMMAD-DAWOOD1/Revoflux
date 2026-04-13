@@ -1,11 +1,14 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Check, Mail, Globe, Lock, ChevronDown, Loader2, ArrowRight } from "lucide-react";
 import { InlineWidget } from "react-calendly";
+import { motion, AnimatePresence } from "framer-motion";
 
 export default function ContactPage() {
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
   const [formData, setFormData] = useState({
     fullName: "",
     email: "",
@@ -14,9 +17,32 @@ export default function ContactPage() {
     message: "",
   });
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+  const services = [
+    "Workflow Automation",
+    "AI Assistant",
+    "Sales Automation",
+    "Custom AI Project"
+  ];
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setIsDropdownOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleServiceSelect = (service: string) => {
+    setFormData((prev) => ({ ...prev, service }));
+    setIsDropdownOpen(false);
   };
 
   const handleContactFormSubmit = async () => {
@@ -92,47 +118,52 @@ export default function ContactPage() {
         </div>
       </section>
 
-      {/* MAIN CONTENT V-STACK */}
-      <section className="py-20 md:py-32 container mx-auto px-6 max-w-[900px] relative z-10 flex-grow">
-        <div className="space-y-24">
+      {/* MAIN CONTENT GRID */}
+      <section className="py-20 md:py-32 container mx-auto px-6 max-w-[1240px] relative z-10 flex-grow">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-start">
           
-          {/* CALENDLY SECTION (TOP) */}
-          <div id="book-call" className="animate-in fade-in slide-in-from-bottom-6 duration-1000 delay-200">
-            <div className="text-center mb-12">
-               <h2 className="text-[32px] md:text-[44px] font-display font-[800] text-white tracking-tight mb-4">Book a Free Strategy Call</h2>
-               <p className="text-white/50 text-[17px] md:text-[19px]">30 minutes. No pressure. Just a conversation about your goals.</p>
+          {/* LEFT COLUMN: CALENDLY */}
+          <div id="book-call" className="animate-in fade-in duration-500">
+            <div className="text-left mb-12">
+               <h2 className="text-[32px] md:text-[40px] font-display font-[800] text-white tracking-tight mb-4">Book a Free Strategy Call</h2>
+               <p className="text-white/50 text-[16px] md:text-[18px] max-w-md leading-relaxed">30 minutes. No pressure. Just a conversation about your goals.</p>
             </div>
             
-            <div className="bg-[#0a0a0c] border border-white/5 rounded-[32px] overflow-hidden shadow-2xl relative">
-              <InlineWidget 
-                url="https://calendly.com/revoflux-ai/30min?hide_branding=1"
-                styles={{
-                  height: '1000px',
-                  width: '100%'
-                }}
-                pageSettings={{
-                  backgroundColor: '000000',
-                  hideEventTypeDetails: false,
-                  hideLandingPageDetails: false,
-                  primaryColor: '8b5cf6',
-                  textColor: 'ffffff'
-                }}
-              />
+            <div className="bg-[#0a0a0c] border border-white/5 rounded-[32px] overflow-hidden shadow-2xl relative min-h-[800px] flex items-center justify-center">
+              {/* Subtle loading spinner behind the iframe */}
+              <div className="absolute inset-0 flex items-center justify-center z-0">
+                <div className="flex flex-col items-center gap-4">
+                  <div className="w-12 h-12 border-4 border-accent/20 border-t-accent rounded-full animate-spin"></div>
+                  <p className="text-white/20 font-mono text-xs uppercase tracking-[0.2em]">Initializing Calendar...</p>
+                </div>
+              </div>
+
+              <div className="w-full relative z-10 transition-opacity duration-1000">
+                <InlineWidget 
+                  url="https://calendly.com/revoflux-ai/30min?hide_branding=1"
+                  styles={{
+                    height: '1000px',
+                    width: '100%'
+                  }}
+                  pageSettings={{
+                    backgroundColor: '000000',
+                    hideEventTypeDetails: false,
+                    hideLandingPageDetails: false,
+                    primaryColor: '8b5cf6',
+                    textColor: 'ffffff'
+                  }}
+                />
+              </div>
             </div>
           </div>
 
-          {/* DIVIDER */}
-          <div className="relative py-4">
-            <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t border-white/5"></div>
+          {/* RIGHT COLUMN: CONTACT FORM */}
+          <div className="w-full animate-in fade-in slide-in-from-bottom-8 duration-1000 delay-400">
+            <div className="text-left mb-12 lg:mt-0 mt-16">
+               <h2 className="text-[32px] md:text-[40px] font-display font-[800] text-white tracking-tight mb-4">Or Send Us a Message</h2>
+               <p className="text-white/50 text-[16px] md:text-[18px] max-w-md leading-relaxed">We'll get back to you within 24 hours.</p>
             </div>
-            <div className="relative flex justify-center text-[13px] font-mono uppercase tracking-[0.3em]">
-              <span className="bg-black px-8 text-white/30">Or send us a message</span>
-            </div>
-          </div>
 
-          {/* CONTACT FORM SECTION (BOTTOM) */}
-          <div className="max-w-[700px] mx-auto w-full animate-in fade-in slide-in-from-bottom-8 duration-1000 delay-400">
             {status === "success" ? (
               <div className="bg-white/5 border border-white/10 rounded-[32px] p-10 md:p-16 text-center animate-in zoom-in-95 duration-500 shadow-2xl">
                 <div className="w-20 h-20 bg-green-500/20 rounded-full flex items-center justify-center mx-auto mb-8">
@@ -186,21 +217,53 @@ export default function ContactPage() {
                   />
                 </div>
 
+                {/* CUSTOM DROPDOWN */}
                 <div className="space-y-2">
                   <label className="text-white/60 text-sm font-medium ml-1 uppercase tracking-wider">Service Interested In</label>
-                  <div className="relative">
-                    <select 
-                      name="service"
-                      value={formData.service}
-                      onChange={handleChange}
-                      className="w-full bg-white/5 border border-white/10 rounded-2xl px-5 py-4 text-white appearance-none focus:outline-none focus:border-accent/50 transition-all cursor-pointer font-body font-medium"
+                  <div className="relative" ref={dropdownRef}>
+                    <button
+                      type="button"
+                      onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                      className="w-full bg-white/5 border border-white/10 rounded-2xl px-5 py-4 text-white flex items-center justify-between focus:outline-none focus:border-accent/50 transition-all cursor-pointer font-body font-medium"
                     >
-                      <option value="Workflow Automation">Workflow Automation</option>
-                      <option value="AI Assistant">AI Assistant</option>
-                      <option value="Sales Automation">Sales Automation</option>
-                      <option value="Custom AI Project">Custom AI Project</option>
-                    </select>
-                    <ChevronDown size={20} className="absolute right-5 top-1/2 -translate-y-1/2 text-white/40 pointer-events-none" />
+                      <span>{formData.service}</span>
+                      <motion.div
+                        animate={{ rotate: isDropdownOpen ? 180 : 0 }}
+                        transition={{ duration: 0.3, ease: "easeInOut" }}
+                      >
+                        <ChevronDown size={20} className="text-white/40" />
+                      </motion.div>
+                    </button>
+
+                    <AnimatePresence>
+                      {isDropdownOpen && (
+                        <motion.div
+                          initial={{ opacity: 0, scale: 0.95, y: -10 }}
+                          animate={{ opacity: 1, scale: 1, y: 0 }}
+                          exit={{ opacity: 0, scale: 0.95, y: -10 }}
+                          transition={{ duration: 0.2, ease: "easeOut" }}
+                          className="absolute z-[100] top-full mt-2 w-full bg-[#0a0a0c] border border-white/10 rounded-2xl overflow-hidden shadow-2xl"
+                        >
+                          <div className="py-2">
+                            {services.map((service) => (
+                              <button
+                                key={service}
+                                type="button"
+                                onClick={() => handleServiceSelect(service)}
+                                className={`w-full text-left px-5 py-3.5 text-sm transition-all flex items-center justify-between ${
+                                  formData.service === service 
+                                  ? "bg-accent/10 text-accent font-bold" 
+                                  : "text-white/60 hover:bg-white/5 hover:text-white font-medium"
+                                }`}
+                              >
+                                {service}
+                                {formData.service === service && <Check size={16} />}
+                              </button>
+                            ))}
+                          </div>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
                   </div>
                 </div>
 
@@ -242,42 +305,42 @@ export default function ContactPage() {
               </div>
             )}
           </div>
+        </div>
 
-          {/* ADDITIONAL FOOTER INFO */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 pt-20 border-t border-white/5 animate-in fade-in duration-1000 delay-500">
-             <div className="space-y-6">
-               <h3 className="text-xl font-display font-bold text-white uppercase tracking-widest">Direct Contact</h3>
-               <div className="space-y-4">
-                 <a href="mailto:hello@revoflux.app" className="flex items-center gap-4 text-white/40 hover:text-accent transition-colors group">
-                   <div className="w-10 h-10 rounded-lg bg-white/5 flex items-center justify-center border border-white/10 transition-colors">
-                     <Mail size={18} />
-                   </div>
-                   <span className="text-[17px] font-medium font-body underline decoration-white/10 underline-offset-4">hello@revoflux.app</span>
-                 </a>
-                 <div className="flex items-center gap-4 text-white/40">
-                   <div className="w-10 h-10 rounded-lg bg-white/5 flex items-center justify-center border border-white/10">
-                     <Globe size={18} />
-                   </div>
-                   <span className="text-[17px] font-medium font-body underline decoration-white/10 underline-offset-4">Global Operations · Remote-First</span>
+        {/* ADDITIONAL FOOTER INFO */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 pt-20 mt-32 border-t border-white/5 animate-in fade-in duration-1000 delay-500">
+           <div className="space-y-6">
+             <h3 className="text-xl font-display font-bold text-white uppercase tracking-widest">Direct Contact</h3>
+             <div className="space-y-4">
+               <a href="mailto:revoflux.ai@gmail.com" className="flex items-center gap-4 text-white/40 hover:text-accent transition-colors group">
+                 <div className="w-10 h-10 rounded-lg bg-white/5 flex items-center justify-center border border-white/10 transition-colors">
+                   <Mail size={18} />
                  </div>
+                 <span className="text-[17px] font-medium font-body underline decoration-white/10 underline-offset-4">revoflux.ai@gmail.com</span>
+               </a>
+               <div className="flex items-center gap-4 text-white/40">
+                 <div className="w-10 h-10 rounded-lg bg-white/5 flex items-center justify-center border border-white/10">
+                   <Globe size={18} />
+                 </div>
+                 <span className="text-[17px] font-medium font-body underline decoration-white/10 underline-offset-4">Global Operations · Remote-First</span>
                </div>
              </div>
-             <div className="space-y-6">
-                <h3 className="text-xl font-display font-bold text-white uppercase tracking-widest">Why RevoFlux?</h3>
-                <div className="space-y-5">
-                   {[
-                     "Specialized AI Architecture",
-                     "Western Market Standards",
-                     "Scalable Automation Frameworks"
-                   ].map((item, i) => (
-                     <div key={i} className="flex items-center gap-3">
-                       <Check size={16} className="text-accent" />
-                       <span className="text-white/60 font-body">{item}</span>
-                     </div>
-                   ))}
-                </div>
-             </div>
-          </div>
+           </div>
+           <div className="space-y-6">
+              <h3 className="text-xl font-display font-bold text-white uppercase tracking-widest">Why RevoFlux?</h3>
+              <div className="space-y-5">
+                 {[
+                   "Specialized AI Architecture",
+                   "Western Market Standards",
+                   "Scalable Automation Frameworks"
+                 ].map((item, i) => (
+                   <div key={i} className="flex items-center gap-3">
+                     <Check size={16} className="text-accent" />
+                     <span className="text-white/60 font-body">{item}</span>
+                   </div>
+                 ))}
+              </div>
+           </div>
         </div>
       </section>
 

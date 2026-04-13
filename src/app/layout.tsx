@@ -16,8 +16,13 @@ const jetbrains = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "REVOFLUX | Intelligent Automation for Modern Businesses",
-  description: "We Automate the Work. You Scale the Business. Built for Western Markets. Powered by AI.",
+  title: "RevoFlux | Intelligent Automation for Modern Businesses",
+  description: "We automate the work. You scale the business.",
+  icons: {
+    icon: "/favicon.ico",
+    shortcut: "/favicon.ico",
+    apple: "/apple-touch-icon.png",
+  },
 };
 
 export default function RootLayout({
@@ -27,6 +32,12 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className="dark scroll-smooth">
+      <head>
+        <link rel="preconnect" href="https://calendly.com" />
+        <link rel="preconnect" href="https://assets.calendly.com" />
+        <link rel="dns-prefetch" href="https://calendly.com" />
+        <link rel="dns-prefetch" href="https://assets.calendly.com" />
+      </head>
       <body className={`${plusJakarta.variable} ${jetbrains.variable} font-sans bg-black antialiased selection:bg-accent selection:text-black`}>
         <Navbar />
         <main>{children}</main>

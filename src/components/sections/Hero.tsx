@@ -7,24 +7,82 @@ import { ArrowRight } from "lucide-react";
 
 export default function Hero() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const mousePos = useRef({ x: 0, y: 0 });
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
 
-    const ctx = canvas.getContext("2d", { alpha: false });
+    const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
-    let particles: Particle[] = [];
+    let stars: Star[] = [];
     let animationFrameId: number;
-
     const DPR = window.devicePixelRatio || 1;
-    
+    let centerX = 0;
+    let centerY = 0;
+
+    class Star {
+      x: number;
+      y: number;
+      size: number;
+      opacity: number;
+      color: string;
+      angle: number;
+      speed: number;
+      hasGlow: boolean;
+
+      constructor(width: number, height: number, initialRandom = false) {
+        this.angle = Math.random() * Math.PI * 2;
+        this.speed = 0.05 + Math.random() * 0.1;
+        this.size = 0.3 + Math.random() * 1.9;
+        this.opacity = 0.5 + Math.random() * 0.5;
+        this.color = Math.random() > 0.25 ? "#ffffff" : "#c084fc";
+        this.hasGlow = this.size > 1.5;
+
+        if (initialRandom) {
+          this.x = Math.random() * width;
+          this.y = Math.random() * height;
+        } else {
+          this.x = width / 2;
+          this.y = height / 2;
+        }
+      }
+
+      update(width: number, height: number) {
+        this.x += Math.cos(this.angle) * this.speed;
+        this.y += Math.sin(this.angle) * this.speed;
+
+        // Reset to center if out of bounds
+        if (this.x < 0 || this.x > width || this.y < 0 || this.y > height) {
+          this.x = width / 2;
+          this.y = height / 2;
+          this.angle = Math.random() * Math.PI * 2;
+        }
+      }
+
+      draw(ctx: CanvasRenderingContext2D) {
+        ctx.save();
+        ctx.globalAlpha = this.opacity;
+        ctx.fillStyle = this.color;
+
+        if (this.hasGlow) {
+          ctx.shadowBlur = 3;
+          ctx.shadowColor = "#ffffff";
+        }
+
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.restore();
+      }
+    }
+
     const init = () => {
       const width = window.innerWidth;
       const height = window.innerHeight;
+      centerX = width / 2;
+      centerY = height / 2;
       
       canvas.width = width * DPR;
       canvas.height = height * DPR;
@@ -32,98 +90,18 @@ export default function Hero() {
       canvas.style.height = `${height}px`;
       ctx.scale(DPR, DPR);
 
-      particles = [];
-      const particleCount = Math.min(1500, (width * height) / 1000);
-
-      for (let i = 0; i < particleCount; i++) {
-        particles.push(new Particle(width, height));
+      stars = [];
+      for (let i = 0; i < 180; i++) {
+        stars.push(new Star(width, height, true));
       }
     };
 
-    class Particle {
-      x: number;
-      y: number;
-      originX: number;
-      originY: number;
-      size: number;
-      vx: number;
-      vy: number;
-      type: "dot" | "dash";
-      opacity: number;
-      angle: number;
-      friction: number;
-      spring: number;
-
-      constructor(width: number, height: number) {
-        this.x = Math.random() * width;
-        this.y = Math.random() * height;
-        this.originX = this.x;
-        this.originY = this.y;
-        this.type = "dot";
-        this.size = Math.random() * 1.5 + 0.5;
-        this.vx = 0;
-        this.vy = 0;
-        this.opacity = Math.random() * 0.7 + 0.2;
-        this.angle = Math.random() * Math.PI * 2;
-        this.friction = 0.92;
-        this.spring = 0.015;
-      }
-
-      update() {
-        const dx = mousePos.current.x - this.x;
-        const dy = mousePos.current.y - this.y;
-        const distance = Math.sqrt(dx * dx + dy * dy);
-        const maxDist = 180;
-
-        if (distance < maxDist) {
-          const force = (maxDist - distance) / maxDist;
-          const angle = Math.atan2(dy, dx);
-          
-          this.vx -= Math.cos(angle) * force * 5.5;
-          this.vy -= Math.sin(angle) * force * 5.5;
-          
-          if (this.type === "dash") {
-            this.angle = angle + Math.PI / 2;
-          }
-        }
-
-        const dxOrigin = this.originX - this.x;
-        const dyOrigin = this.originY - this.y;
-        
-        this.vx += dxOrigin * this.spring;
-        this.vy += dyOrigin * this.spring;
-
-        this.vx *= this.friction;
-        this.vy *= this.friction;
-
-        this.x += this.vx;
-        this.y += this.vy;
-      }
-
-      draw(ctx: CanvasRenderingContext2D) {
-        ctx.fillStyle = `rgba(255, 255, 255, ${this.opacity})`;
-        
-        if (this.type === "dot") {
-          ctx.beginPath();
-          ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-          ctx.fill();
-        } else {
-          ctx.save();
-          ctx.translate(this.x, this.y);
-          ctx.rotate(this.angle);
-          ctx.fillRect(-1.5, -0.5, 3.5, 1);
-          ctx.restore();
-        }
-      }
-    }
-
     const animate = () => {
-      ctx.fillStyle = "#000000";
-      ctx.fillRect(0, 0, canvas.width / DPR, canvas.height / DPR);
+      ctx.clearRect(0, 0, canvas.width / DPR, canvas.height / DPR);
 
-      particles.forEach((p) => {
-        p.update();
-        p.draw(ctx);
+      stars.forEach((star) => {
+        star.update(canvas.width / DPR, canvas.height / DPR);
+        star.draw(ctx);
       });
 
       animationFrameId = requestAnimationFrame(animate);
@@ -132,20 +110,14 @@ export default function Hero() {
     init();
     animate();
 
-    const handleMouseMove = (e: MouseEvent) => {
-      mousePos.current = { x: e.clientX, y: e.clientY };
-    };
-
     const handleResize = () => {
       init();
     };
 
-    window.addEventListener("mousemove", handleMouseMove);
     window.addEventListener("resize", handleResize);
 
     return () => {
       cancelAnimationFrame(animationFrameId);
-      window.removeEventListener("mousemove", handleMouseMove);
       window.removeEventListener("resize", handleResize);
     };
   }, []);
@@ -177,7 +149,9 @@ export default function Hero() {
             transition={{ duration: 1.5, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
             className="font-display font-[800] text-white leading-[1.05] mb-10 tracking-[-0.03em]"
           >
-            <span className="text-[40px] md:text-[62px] lg:text-[72px] block">Intelligent Automation</span>
+            <span className="text-[40px] md:text-[62px] lg:text-[72px] block">
+              Intelligent <span style={{ fontStyle: 'italic', color: '#ffffff', display: 'inline-block' }}>Automation</span>
+            </span>
             <span className="text-[40px] md:text-[62px] lg:text-[72px] text-glow block">For Modern Businesses.</span>
           </motion.h1>
 
@@ -198,13 +172,13 @@ export default function Hero() {
           >
             <Link 
               href="/contact"
-              className="px-8 py-3.5 bg-gradient-to-r from-accent to-purple-600 text-white font-[600] text-[15px] rounded-full flex items-center gap-2 group hover:opacity-90 transition-opacity shadow-[0_0_30px_rgba(139,92,246,0.3)]"
+              className="px-8 py-3.5 bg-gradient-to-r from-accent to-purple-600 text-white font-[600] text-[15px] rounded-full flex items-center gap-2 group hover:opacity-90 transition-opacity shadow-[0_0_30px_rgba(139,92,246,0.3)] relative z-30"
             >
               Get in touch <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
             </Link>
             <Link 
               href="/#services"
-              className="px-8 py-3.5 border border-white/10 text-white font-[500] text-[15px] rounded-full hover:bg-white/5 transition-colors"
+              className="px-8 py-3.5 border border-white/20 text-white font-[500] text-[15px] rounded-full hover:bg-white/5 transition-colors relative z-30"
             >
               View services
             </Link>

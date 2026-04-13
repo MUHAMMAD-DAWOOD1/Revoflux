@@ -69,27 +69,59 @@ function SmartAnalyzingCard() {
 // CARD 2: AI Development
 // ---------------------------------------------------------
 function AIDevelopmentCard() {
-  const codeLines = [
-    '<span class="text-purple-400">class</span> AutomationTrigger:',
-    '    <span class="text-purple-400">def</span> check_trigger(self):',
-    '        <span class="text-white/30"># Initializing core system...</span>',
-    '        <span class="text-[#8b5cf6]">return</span> <span class="text-[#8b5cf6]">"Active"</span>',
-    '',
-  ];
+  const fullSnippet = `const workflow = async () => {
+  const data = await fetchLeads();
+  const scored = ai.score(data);
+  const filtered = scored.filter(
+    lead => lead.score > 0.85
+  );
+  await crm.push(filtered);
+  await email.send({
+    to: filtered,
+    template: 'outreach_v2'
+  });
+  return { success: true };
+};
 
-  const [visibleLines, setVisibleLines] = useState<string[]>([]);
+triggerWorkflow(workflow);`;
+
+  const [displayText, setDisplayText] = useState("");
+  const typingSpeed = 45;
+  const clearingSpeed = 20;
+  const pauseEnd = 1000;
+  const pauseStart = 500;
 
   useEffect(() => {
-    let index = 0;
-    const interval = setInterval(() => {
-      setVisibleLines(prev => {
-        const nextLine = codeLines[index % codeLines.length];
-        index++;
-        const newLines = [...prev, nextLine];
-        return newLines.length > 20 ? newLines.slice(newLines.length - 20) : newLines;
-      });
-    }, 600); // Add a line every 600ms
-    return () => clearInterval(interval);
+    let timeoutId: NodeJS.Timeout;
+    let isTyping = true;
+    let charIndex = 0;
+
+    const runTypewriter = () => {
+      if (isTyping) {
+        if (charIndex < fullSnippet.length) {
+          setDisplayText(fullSnippet.substring(0, charIndex + 1));
+          charIndex++;
+          timeoutId = setTimeout(runTypewriter, typingSpeed);
+        } else {
+          // Pause at end
+          isTyping = false;
+          timeoutId = setTimeout(runTypewriter, pauseEnd);
+        }
+      } else {
+        if (charIndex > 0) {
+          setDisplayText(fullSnippet.substring(0, charIndex - 1));
+          charIndex--;
+          timeoutId = setTimeout(runTypewriter, clearingSpeed);
+        } else {
+          // Pause at start
+          isTyping = true;
+          timeoutId = setTimeout(runTypewriter, pauseStart);
+        }
+      }
+    };
+
+    runTypewriter();
+    return () => clearTimeout(timeoutId);
   }, []);
 
   return (
@@ -105,20 +137,26 @@ function AIDevelopmentCard() {
             <div className="w-2.5 h-2.5 rounded-full bg-red-500/80" />
             <div className="w-2.5 h-2.5 rounded-full bg-yellow-500/80" />
             <div className="w-2.5 h-2.5 rounded-full bg-green-500/80" />
-            <span className="ml-3 text-white/20 text-[10px] font-mono">trigger.py</span>
+            <span className="ml-3 text-white/20 text-[10px] font-mono">workflow.ts</span>
          </div>
          {/* Code Area */}
-         <div className="p-5 h-[180px] w-full relative font-mono text-[12px] md:text-[13px] leading-[2] text-white/50 flex flex-col justify-end overflow-hidden">
-            <pre className="whitespace-pre-wrap flex flex-col gap-1">
-               {visibleLines.map((line, idx) => (
-                 <div key={idx} dangerouslySetInnerHTML={{ __html: line }} />
-               ))}
-               <div className="flex items-center">
-                 <motion.span animate={{ opacity: [1, 0] }} transition={{ duration: 0.8, repeat: Infinity }} className="inline-block w-2 h-4 bg-white/70 translate-y-0.5" />
-               </div>
+         <div className="p-5 h-[240px] w-full relative font-mono text-[11px] md:text-[12px] leading-[1.6] text-accent/80 flex flex-col overflow-hidden">
+            <pre className="whitespace-pre-wrap break-words">
+               {displayText}
+               <span className="inline-block w-[2px] h-[1em] bg-accent ml-1 translate-y-[2px] animate-cursor-blink" />
             </pre>
          </div>
       </div>
+
+      <style jsx>{`
+        @keyframes cursor-blink {
+          0%, 100% { opacity: 1; }
+          50% { opacity: 0; }
+        }
+        .animate-cursor-blink {
+          animation: cursor-blink 0.5s step-end infinite;
+        }
+      `}</style>
     </div>
   );
 }
