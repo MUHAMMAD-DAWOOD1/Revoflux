@@ -20,9 +20,9 @@ export const metadata: Metadata = {
   description: "We automate the work. You scale the business. RevoFlux is an AI automation agency offering custom AI solutions for businesses.",
   keywords: ["AI Automation Agency", "Custom AI Solutions for Businesses", "Software Development", "Workflow Automation", "Predictive Models"],
   icons: {
-    icon: "/favicon.ico",
-    shortcut: "/favicon.ico",
-    apple: "/apple-touch-icon.png",
+    icon: "/favicon.png?v=3",
+    shortcut: "/favicon.png?v=3",
+    apple: "/apple-touch-icon.png?v=3",
   },
 };
 
