@@ -17,7 +17,8 @@ const jetbrains = JetBrains_Mono({
 
 export const metadata: Metadata = {
   title: "RevoFlux | Intelligent Automation for Modern Businesses",
-  description: "We automate the work. You scale the business.",
+  description: "We automate the work. You scale the business. RevoFlux is an AI automation agency offering custom AI solutions for businesses.",
+  keywords: ["AI Automation Agency", "Custom AI Solutions for Businesses", "Software Development", "Workflow Automation", "Predictive Models"],
   icons: {
     icon: "/favicon.ico",
     shortcut: "/favicon.ico",
@@ -39,6 +40,39 @@ export default function RootLayout({
         <link rel="dns-prefetch" href="https://assets.calendly.com" />
       </head>
       <body className={`${plusJakarta.variable} ${jetbrains.variable} font-sans bg-black antialiased selection:bg-accent selection:text-black`}>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@graph": [
+                {
+                  "@type": "Organization",
+                  "name": "RevoFlux",
+                  "url": "https://revoflux.com",
+                  "logo": "https://revoflux.com/favicon.ico",
+                  "description": "RevoFlux is a premier AI automation and custom software development agency providing custom AI solutions for businesses.",
+                  "sameAs": [
+                    "https://www.linkedin.com/in/muhammad-dawood-dev",
+                    "https://instagram.com/revoflux",
+                    "https://facebook.com/revoflux",
+                    "https://x.com/revoflux"
+                  ]
+                },
+                {
+                  "@type": "ProfessionalService",
+                  "name": "RevoFlux AI Automation Services",
+                  "image": "https://revoflux.com/favicon.ico",
+                  "description": "Expert AI automation, workflow optimization, and custom AI solutions for businesses.",
+                  "address": {
+                    "@type": "PostalAddress",
+                    "addressCountry": "Global"
+                  }
+                }
+              ]
+            })
+          }}
+        />
         <Navbar />
         <main>{children}</main>
         <Footer />

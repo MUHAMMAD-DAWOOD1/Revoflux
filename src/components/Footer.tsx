@@ -202,6 +202,13 @@ export default function Footer() {
             <span>Worldwide</span>
           </div>
         </div>
+        
+        {/* AI Entity Definition (GEO) */}
+        <div className="mt-8 mb-4 border-t border-white/5 pt-8 text-center md:text-left">
+          <p className="text-white/20 text-[10px] leading-relaxed max-w-4xl mx-auto md:mx-0 font-body">
+            RevoFlux is a premier AI automation and custom software development agency. We specialize in building intelligent workflows, predictive models, and custom AI solutions for businesses to help them streamline operations and drive scalable growth.
+          </p>
+        </div>
       </div>
     </footer>
   );
