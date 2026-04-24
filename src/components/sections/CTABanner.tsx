@@ -25,7 +25,7 @@ export default function CTABanner() {
           <motion.h2 
             initial={{ opacity: 0, scale: 0.98 }}
             whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: false, amount: 0.5 }}
+            viewport={{ once: true, amount: 0.2, margin: "0px 0px -50px 0px" }}
             transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
             style={{ willChange: "transform, opacity" }}
             className="font-display font-[900] text-black leading-[1.1] mb-8 relative z-10 max-w-4xl"
@@ -39,7 +39,7 @@ export default function CTABanner() {
           <motion.p 
             initial={{ opacity: 0, y: 15 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: false, amount: 0.5 }}
+            viewport={{ once: true, amount: 0.2, margin: "0px 0px -50px 0px" }}
             transition={{ duration: 1, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
             style={{ willChange: "transform, opacity" }}
             className="font-body text-[17px] md:text-[21px] text-black/60 mb-12 max-w-[560px] leading-relaxed relative z-10"
@@ -50,7 +50,7 @@ export default function CTABanner() {
           <motion.div
             initial={{ opacity: 0, y: 15 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: false, amount: 0.5 }}
+            viewport={{ once: true, amount: 0.2, margin: "0px 0px -50px 0px" }}
             transition={{ duration: 1, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
             style={{ willChange: "transform, opacity" }}
             className="flex flex-col sm:flex-row gap-4 relative z-10 w-full sm:w-auto"
@@ -72,7 +72,7 @@ export default function CTABanner() {
           <motion.div 
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
-            viewport={{ once: false, amount: 0.5 }}
+            viewport={{ once: true, amount: 0.2, margin: "0px 0px -50px 0px" }}
             transition={{ duration: 1.2, delay: 0.4 }}
             className="mt-12 inline-flex items-center gap-2.5 px-5 py-2.5 rounded-full bg-black/5 relative z-10"
           >

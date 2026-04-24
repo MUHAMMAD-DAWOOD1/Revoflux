@@ -46,14 +46,14 @@ export default function Works() {
             <motion.div 
               initial={{ opacity: 0, y: 15 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
+              viewport={{ once: true, margin: "0px 0px -50px 0px" }}
               className="inline-flex items-center px-4 py-1.5 rounded-full border border-white/10 bg-white/5 text-[#8b5cf6] font-mono text-[11px] mb-6 tracking-widest uppercase">
               Case Studies
             </motion.div>
             <motion.h2 
               initial={{ opacity: 0, y: 15 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
+              viewport={{ once: true, margin: "0px 0px -50px 0px" }}
               transition={{ delay: 0.1 }}
               className="font-display font-[800] text-white leading-[1.1] tracking-tight mb-6">
               <span className="text-[32px] md:text-[44px] lg:text-[52px]">See How Smart AI Automation Transforms Businesses</span>
@@ -61,7 +61,7 @@ export default function Works() {
             <motion.p
               initial={{ opacity: 0, y: 15 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
+              viewport={{ once: true, margin: "0px 0px -50px 0px" }}
               transition={{ delay: 0.2 }}
               className="text-white/50 text-[16px] md:text-[18px] max-w-2xl leading-relaxed"
             >

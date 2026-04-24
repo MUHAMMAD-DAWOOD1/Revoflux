@@ -91,18 +91,34 @@ export default function Hero() {
       ctx.scale(DPR, DPR);
 
       stars = [];
-      for (let i = 0; i < 180; i++) {
+      const starCount = width < 768 ? 60 : 180;
+      for (let i = 0; i < starCount; i++) {
         stars.push(new Star(width, height, true));
       }
     };
 
-    const animate = () => {
-      ctx.clearRect(0, 0, canvas.width / DPR, canvas.height / DPR);
+    let isVisible = true;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0]) {
+          isVisible = entries[0].isIntersecting;
+        }
+      },
+      { threshold: 0 }
+    );
+    if (containerRef.current) {
+      observer.observe(containerRef.current);
+    }
 
-      stars.forEach((star) => {
-        star.update(canvas.width / DPR, canvas.height / DPR);
-        star.draw(ctx);
-      });
+    const animate = () => {
+      if (isVisible) {
+        ctx.clearRect(0, 0, canvas.width / DPR, canvas.height / DPR);
+
+        stars.forEach((star) => {
+          star.update(canvas.width / DPR, canvas.height / DPR);
+          star.draw(ctx);
+        });
+      }
 
       animationFrameId = requestAnimationFrame(animate);
     };
@@ -119,6 +135,7 @@ export default function Hero() {
     return () => {
       cancelAnimationFrame(animationFrameId);
       window.removeEventListener("resize", handleResize);
+      observer.disconnect();
     };
   }, []);
 

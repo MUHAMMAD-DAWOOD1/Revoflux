@@ -74,7 +74,7 @@ function FeatureRow({ subtitle, titleFirst, titleMain, description, imageSide, c
         variants={imageSide === 'left' ? slideInRight : slideInLeft}
         initial="hidden"
         whileInView="visible"
-        viewport={{ once: false, amount: 0.2 }}
+        viewport={{ once: true, amount: 0.1, margin: "0px 0px -50px 0px" }}
         className="flex-1 w-full"
         style={{ willChange: "transform, opacity" }}
       >
@@ -101,7 +101,7 @@ function FeatureRow({ subtitle, titleFirst, titleMain, description, imageSide, c
         variants={imageSide === 'left' ? slideInLeft : slideInRight}
         initial="hidden"
         whileInView="visible"
-        viewport={{ once: false, amount: 0.2 }}
+        viewport={{ once: true, amount: 0.1, margin: "0px 0px -50px 0px" }}
         className="flex-1 w-full relative"
         style={{ willChange: "transform, opacity" }}
       >

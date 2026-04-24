@@ -45,7 +45,7 @@ export default function Benefits() {
           <motion.div 
             initial={{ opacity: 0, y: 15 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
+            viewport={{ once: true, margin: "0px 0px -50px 0px" }}
             transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
             className="inline-flex items-center px-4 py-1.5 rounded-full border border-white/10 bg-white/5 text-white/80 font-mono text-[11px] mb-6 tracking-widest uppercase">
             Platform Benefits
@@ -53,7 +53,7 @@ export default function Benefits() {
           <motion.h2 
             initial={{ opacity: 0, y: 15 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
+            viewport={{ once: true, margin: "0px 0px -50px 0px" }}
             transition={{ duration: 1.2, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
             className="font-display font-[800] text-white leading-[1.1] mb-8 tracking-tight">
             <span className="text-[32px] md:text-[44px] lg:text-[52px] mr-3">Why companies</span>
@@ -62,7 +62,7 @@ export default function Benefits() {
           <motion.p 
             initial={{ opacity: 0, y: 15 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: false, amount: 0.5 }}
+            viewport={{ once: true, amount: 0.2, margin: "0px 0px -50px 0px" }}
             transition={{ duration: 1.2, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
             style={{ willChange: "transform, opacity" }}
             className="text-[17px] font-body text-text-secondary leading-relaxed">
@@ -77,7 +77,7 @@ export default function Benefits() {
               key={index}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: false, amount: 0.2 }}
+              viewport={{ once: true, amount: 0.1, margin: "0px 0px -50px 0px" }}
               transition={{ duration: 1.2, delay: index * 0.1, ease: [0.16, 1, 0.3, 1] }}
               style={{ willChange: "transform, opacity" }}
               className="premium-card p-8 group"

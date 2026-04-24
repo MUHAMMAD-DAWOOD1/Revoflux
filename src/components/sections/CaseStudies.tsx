@@ -40,7 +40,7 @@ export default function CaseStudies() {
             <motion.div 
               initial={{ opacity: 0, y: 15 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: false, amount: 0.5 }}
+              viewport={{ once: true, amount: 0.2, margin: "0px 0px -50px 0px" }}
               transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
               style={{ willChange: "transform, opacity" }}
               className="inline-flex items-center px-4 py-1.5 rounded-full border border-accent/20 bg-accent/8 text-accent font-mono text-[11px] mb-6 tracking-widest uppercase">
@@ -49,7 +49,7 @@ export default function CaseStudies() {
             <motion.h2 
               initial={{ opacity: 0, y: 15 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: false, amount: 0.5 }}
+              viewport={{ once: true, amount: 0.2, margin: "0px 0px -50px 0px" }}
               transition={{ duration: 1.2, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
               style={{ willChange: "transform, opacity" }}
               className="font-display font-[800] text-white leading-[1.1] tracking-tighter">
@@ -74,7 +74,7 @@ export default function CaseStudies() {
               key={index}
               initial={{ opacity: 0, scale: 0.98 }}
               whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: false, amount: 0.2 }}
+              viewport={{ once: true, amount: 0.1, margin: "0px 0px -50px 0px" }}
               transition={{ duration: 1.2, delay: index * 0.1, ease: [0.16, 1, 0.3, 1] }}
               style={{ willChange: "transform, opacity" }}
               className="premium-card p-1 group overflow-hidden"

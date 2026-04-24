@@ -1,13 +1,15 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import Hero from "@/components/sections/Hero";
-import Services from "@/components/sections/Services";
-import Process from "@/components/sections/Process";
-import Works from "@/components/sections/Works";
-import Benefits from "@/components/sections/Benefits";
-import Testimonials from "@/components/sections/Testimonials";
-import FAQ from "@/components/sections/FAQ";
-import CTABanner from "@/components/sections/CTABanner";
+
+const Services = dynamic(() => import("@/components/sections/Services"));
+const Process = dynamic(() => import("@/components/sections/Process"));
+const Works = dynamic(() => import("@/components/sections/Works"));
+const Benefits = dynamic(() => import("@/components/sections/Benefits"));
+const Testimonials = dynamic(() => import("@/components/sections/Testimonials"));
+const FAQ = dynamic(() => import("@/components/sections/FAQ"));
+const CTABanner = dynamic(() => import("@/components/sections/CTABanner"));
 
 export default function Home() {
   return (
