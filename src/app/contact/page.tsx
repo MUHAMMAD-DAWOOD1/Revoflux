@@ -1,73 +1,61 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
-import { Check, Mail, Globe, Lock, ChevronDown, Loader2, ArrowRight } from "lucide-react";
-import { InlineWidget } from "react-calendly";
-import { motion, AnimatePresence } from "framer-motion";
+import { useState } from "react";
+import { Check, Mail, Globe, Lock, Loader2, ArrowRight, Calendar, MessageSquare } from "lucide-react";
+import Link from "next/link";
 
 export default function ContactPage() {
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const dropdownRef = useRef<HTMLDivElement>(null);
+  const [errorMessage, setErrorMessage] = useState("");
   const [formData, setFormData] = useState({
     fullName: "",
     email: "",
     company: "",
-    service: "Workflow Automation",
+    service: "AI Solutions",
     message: "",
+    honeypot: "",
   });
 
   const services = [
-    "Workflow Automation",
-    "AI Assistant",
-    "Sales Automation",
-    "Custom AI Project"
+    "AI Solutions & Autonomous Agents",
+    "Custom Software & SaaS Development",
+    "Workflow & Business Automation",
+    "API & Systems Integration",
+    "Other / General Inquiry"
   ];
 
-  // Close dropdown when clicking outside
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
-        setIsDropdownOpen(false);
-      }
-    };
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleServiceSelect = (service: string) => {
-    setFormData((prev) => ({ ...prev, service }));
-    setIsDropdownOpen(false);
-  };
+  const handleContactFormSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
 
-  const handleContactFormSubmit = async () => {
     if (!formData.fullName || !formData.email || !formData.message) {
-      alert("Please fill in all required fields.");
+      setErrorMessage("Please complete all required fields.");
+      setStatus("error");
       return;
     }
 
     setStatus("loading");
+    setErrorMessage("");
 
     try {
-      const response = await fetch("https://api.web3forms.com/submit", {
+      const response = await fetch("/api/contact", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           Accept: "application/json",
         },
         body: JSON.stringify({
-          access_key: "4e1a676b-313f-4ae0-ae4b-9394fedd4404",
+          type: "contact",
           name: formData.fullName,
           email: formData.email,
           company: formData.company,
           service: formData.service,
           message: formData.message,
-          subject: `New Contact Form Submission from ${formData.fullName}`,
+          honeypot: formData.honeypot,
         }),
       });
 
@@ -78,282 +66,262 @@ export default function ContactPage() {
           fullName: "",
           email: "",
           company: "",
-          service: "Workflow Automation",
+          service: "AI Solutions",
           message: "",
+          honeypot: "",
         });
       } else {
         setStatus("error");
+        setErrorMessage(result.error || "Failed to submit inquiry. Please try again.");
       }
     } catch (error) {
       console.error("Submission error:", error);
       setStatus("error");
+      setErrorMessage("Network error. Please try again later.");
     }
   };
 
   return (
-    <div className="flex flex-col min-h-screen bg-black pt-16 selection:bg-accent selection:text-black">
-      
-      {/* PAGE HERO */}
-      <section className="relative w-full min-h-[40vh] flex flex-col items-center justify-center text-center overflow-hidden border-b border-white/5">
-        <div 
-          className="absolute inset-0 z-0 opacity-20 pointer-events-none"
-          style={{
-            backgroundImage: `
-              linear-gradient(to right, #27272A 1px, transparent 1px),
-              linear-gradient(to bottom, #27272A 1px, transparent 1px)
-            `,
-            backgroundSize: '56px 56px',
-          }}
-        ></div>
-
-        <div className="absolute z-0 w-[500px] h-[500px] md:w-[700px] md:h-[700px] rounded-full bg-accent opacity-[0.08] blur-[100px] pointer-events-none"></div>
-
-        <div className="relative z-10 max-w-3xl px-6 animate-in fade-in slide-in-from-bottom-4 duration-1000">
-          <h1 className="text-[48px] md:text-[68px] lg:text-[76px] font-display font-[900] leading-[1.05] tracking-tight text-white mb-6 uppercase">
-            Let's build the <span className="text-accent underline decoration-accent/30 underline-offset-8">future</span>.
+    <div className="flex flex-col min-h-screen bg-black">
+      {/* Page Hero */}
+      <section className="relative py-20 md:py-28 border-b border-white/5 overflow-hidden">
+        <div className="container mx-auto px-6 max-w-[1240px] text-center max-w-3xl">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-accent/25 bg-accent/10 text-accent font-mono text-[11px] mb-6 uppercase tracking-widest font-semibold">
+            <MessageSquare size={13} />
+            <span>Start a Project</span>
+          </div>
+          <h1 className="font-display font-[900] text-white text-[38px] sm:text-[52px] md:text-[64px] tracking-tight leading-[1.05] mb-6">
+            Let&apos;s Build the <span className="text-gradient">Future.</span>
           </h1>
-          <p className="text-[18px] md:text-[21px] font-body text-white/50 max-w-2xl mx-auto leading-relaxed">
-            Choose the method that works best for you. Book a call directly or send us a detailed message.
+          <p className="font-body text-text-secondary text-[17px] md:text-[19px] leading-relaxed">
+            Choose the collaboration method that suits your schedule. Book an architecture strategy call directly or submit your project specifications below.
           </p>
         </div>
       </section>
 
-      {/* MAIN CONTENT GRID */}
-      <section className="py-20 md:py-32 container mx-auto px-6 max-w-[1240px] relative z-10 flex-grow">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-start">
+      {/* Main Grid */}
+      <section className="py-20 container mx-auto px-6 max-w-[1240px] flex-grow">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
           
-          {/* LEFT COLUMN: CALENDLY */}
-          <div id="book-call" className="animate-in fade-in duration-500">
-            <div className="text-left mb-12">
-               <h2 className="text-[32px] md:text-[40px] font-display font-[800] text-white tracking-tight mb-4">Book a Free Strategy Call</h2>
-               <p className="text-white/50 text-[16px] md:text-[18px] max-w-md leading-relaxed">30 minutes. No pressure. Just a conversation about your goals.</p>
+          {/* Left Column: Direct Strategy Call & Details (Span 5) */}
+          <div className="lg:col-span-5 space-y-8">
+            <div className="bg-[#050505] border border-white/10 rounded-3xl p-8">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-10 h-10 rounded-xl bg-accent/10 border border-accent/25 flex items-center justify-center text-accent">
+                  <Calendar size={20} />
+                </div>
+                <div>
+                  <h2 className="text-white font-display font-bold text-xl">Schedule a Strategy Call</h2>
+                  <span className="text-text-muted text-xs font-mono">30 Minutes &bull; Direct Architect Access</span>
+                </div>
+              </div>
+              <p className="text-text-secondary text-sm leading-relaxed mb-6">
+                Prefer a real-time conversation? Schedule a 30-minute discovery call to evaluate project feasibility, review architecture requirements, and discuss timelines.
+              </p>
+              <Link
+                href="/book-a-consultation"
+                className="w-full py-4 bg-accent text-black font-extrabold text-sm rounded-xl flex items-center justify-center gap-2 hover:bg-accent-hover transition-all"
+              >
+                <span>Open Interactive Calendar</span>
+                <ArrowRight size={16} />
+              </Link>
             </div>
-            
-            <div className="bg-[#0a0a0c] border border-white/5 rounded-[32px] overflow-hidden shadow-2xl relative min-h-[800px] flex items-center justify-center">
-              {/* Subtle loading spinner behind the iframe */}
-              <div className="absolute inset-0 flex items-center justify-center z-0">
-                <div className="flex flex-col items-center gap-4">
-                  <div className="w-12 h-12 border-4 border-accent/20 border-t-accent rounded-full animate-spin"></div>
-                  <p className="text-white/20 font-mono text-xs uppercase tracking-[0.2em]">Initializing Calendar...</p>
+
+            <div className="bg-[#050505] border border-white/10 rounded-3xl p-8 space-y-6">
+              <h3 className="text-white font-display font-bold text-lg">Direct Information</h3>
+              
+              <div className="space-y-4">
+                <a 
+                  href="mailto:revoflux.ai@gmail.com" 
+                  className="flex items-center gap-3.5 text-text-secondary hover:text-white transition-colors group"
+                >
+                  <div className="w-9 h-9 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-accent shrink-0">
+                    <Mail size={16} />
+                  </div>
+                  <div>
+                    <span className="text-text-muted text-[11px] font-mono uppercase block">Direct Inquiries</span>
+                    <span className="text-sm font-medium text-white group-hover:text-accent transition-colors">
+                      revoflux.ai@gmail.com
+                    </span>
+                  </div>
+                </a>
+
+                <div className="flex items-center gap-3.5 text-text-secondary">
+                  <div className="w-9 h-9 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-accent shrink-0">
+                    <Globe size={16} />
+                  </div>
+                  <div>
+                    <span className="text-text-muted text-[11px] font-mono uppercase block">Delivery Model</span>
+                    <span className="text-sm font-medium text-white">
+                      Global Operations &bull; Remote-First Engineering
+                    </span>
+                  </div>
                 </div>
               </div>
 
-              <div className="w-full relative z-10 transition-opacity duration-1000">
-                <InlineWidget 
-                  url="https://calendly.com/revoflux-ai/30min?hide_branding=1"
-                  styles={{
-                    height: '1000px',
-                    width: '100%'
-                  }}
-                  pageSettings={{
-                    backgroundColor: '000000',
-                    hideEventTypeDetails: false,
-                    hideLandingPageDetails: false,
-                    primaryColor: '8b5cf6',
-                    textColor: 'ffffff'
-                  }}
-                />
+              <div className="pt-4 border-t border-white/5">
+                <span className="text-text-muted text-xs block mb-2 font-mono uppercase">Typical Response Time</span>
+                <p className="text-white text-sm font-medium">Within 24 business hours</p>
               </div>
             </div>
           </div>
 
-          {/* RIGHT COLUMN: CONTACT FORM */}
-          <div className="w-full animate-in fade-in slide-in-from-bottom-8 duration-1000 delay-400">
-            <div className="text-left mb-12 lg:mt-0 mt-16">
-               <h2 className="text-[32px] md:text-[40px] font-display font-[800] text-white tracking-tight mb-4">Or Send Us a Message</h2>
-               <p className="text-white/50 text-[16px] md:text-[18px] max-w-md leading-relaxed">We'll get back to you within 24 hours.</p>
-            </div>
+          {/* Right Column: Contact Form (Span 7) */}
+          <div className="lg:col-span-7">
+            <div className="bg-[#050505] border border-white/10 rounded-3xl p-8 md:p-12 shadow-2xl">
+              <h2 className="text-white font-display font-bold text-2xl mb-2">Send Us a Message</h2>
+              <p className="text-text-secondary text-sm mb-8">
+                Provide details about your project specifications or operational workflow needs.
+              </p>
 
-            {status === "success" ? (
-              <div className="bg-white/5 border border-white/10 rounded-[32px] p-10 md:p-16 text-center animate-in zoom-in-95 duration-500 shadow-2xl">
-                <div className="w-20 h-20 bg-green-500/20 rounded-full flex items-center justify-center mx-auto mb-8">
-                  <Check size={40} className="text-green-500" />
-                </div>
-                <h3 className="text-2xl font-bold text-white mb-4">Message sent!</h3>
-                <p className="text-white/60 text-lg">We'll get back to you within 24 hours.</p>
-                <button 
-                  onClick={() => setStatus("idle")}
-                  className="mt-8 text-accent font-bold hover:underline"
-                >
-                  Send another message
-                </button>
-              </div>
-            ) : (
-              <div className="space-y-8 bg-[#0a0a0c]/50 p-8 md:p-12 border border-white/5 rounded-[32px]">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div className="space-y-2">
-                    <label className="text-white/60 text-sm font-medium ml-1 uppercase tracking-wider">Full Name *</label>
-                    <input 
-                      type="text" 
-                      name="fullName"
-                      value={formData.fullName}
-                      onChange={handleChange}
-                      placeholder="e.g. Alex Carter"
-                      className="w-full bg-white/5 border border-white/10 rounded-2xl px-5 py-4 text-white placeholder:text-white/20 focus:outline-none focus:border-accent/50 transition-all font-body"
-                    />
+              {status === "success" ? (
+                <div className="p-8 text-center bg-accent/5 border border-accent/20 rounded-2xl animate-in zoom-in-95 duration-300">
+                  <div className="w-14 h-14 bg-accent/20 rounded-full flex items-center justify-center mx-auto mb-4 text-accent">
+                    <Check size={28} />
                   </div>
-                  <div className="space-y-2">
-                    <label className="text-white/60 text-sm font-medium ml-1 uppercase tracking-wider">Email Address *</label>
-                    <input 
-                      type="email" 
-                      name="email"
-                      value={formData.email}
-                      onChange={handleChange}
-                      placeholder="e.g. alex@company.com"
-                      className="w-full bg-white/5 border border-white/10 rounded-2xl px-5 py-4 text-white placeholder:text-white/20 focus:outline-none focus:border-accent/50 transition-all font-body"
-                    />
-                  </div>
+                  <h3 className="text-xl font-bold text-white mb-2 font-display">Inquiry Received</h3>
+                  <p className="text-text-secondary text-sm max-w-md mx-auto mb-6">
+                    Thank you for reaching out. A senior engineer will review your project details and respond within 24 business hours.
+                  </p>
+                  <button
+                    type="button"
+                    onClick={() => setStatus("idle")}
+                    className="text-accent text-xs font-mono uppercase tracking-wider hover:underline font-bold"
+                  >
+                    Submit another inquiry &rarr;
+                  </button>
                 </div>
-
-                <div className="space-y-2">
-                  <label className="text-white/60 text-sm font-medium ml-1 uppercase tracking-wider">Company Name</label>
-                  <input 
-                    type="text" 
-                    name="company"
-                    value={formData.company}
+              ) : (
+                <form onSubmit={handleContactFormSubmit} className="space-y-6">
+                  {/* Honeypot field for bot detection */}
+                  <input
+                    type="text"
+                    name="honeypot"
+                    value={formData.honeypot}
                     onChange={handleChange}
-                    placeholder="e.g. Stark Industries"
-                    className="w-full bg-white/5 border border-white/10 rounded-2xl px-5 py-4 text-white placeholder:text-white/20 focus:outline-none focus:border-accent/50 transition-all font-body"
+                    className="hidden"
+                    tabIndex={-1}
+                    autoComplete="off"
+                    aria-hidden="true"
                   />
-                </div>
 
-                {/* CUSTOM DROPDOWN */}
-                <div className="space-y-2">
-                  <label className="text-white/60 text-sm font-medium ml-1 uppercase tracking-wider">Service Interested In</label>
-                  <div className="relative" ref={dropdownRef}>
-                    <button
-                      type="button"
-                      onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                      className="w-full bg-white/5 border border-white/10 rounded-2xl px-5 py-4 text-white flex items-center justify-between focus:outline-none focus:border-accent/50 transition-all cursor-pointer font-body font-medium"
-                    >
-                      <span>{formData.service}</span>
-                      <motion.div
-                        animate={{ rotate: isDropdownOpen ? 180 : 0 }}
-                        transition={{ duration: 0.3, ease: "easeInOut" }}
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="space-y-2">
+                      <label htmlFor="fullName" className="text-white text-xs font-mono uppercase tracking-wider block font-semibold">
+                        Full Name *
+                      </label>
+                      <input
+                        id="fullName"
+                        type="text"
+                        name="fullName"
+                        required
+                        value={formData.fullName}
+                        onChange={handleChange}
+                        placeholder="Alex Morgan"
+                        className="w-full bg-[#0a0a0c] border border-white/10 rounded-xl px-4 py-3.5 text-white placeholder:text-text-muted text-sm focus:outline-none focus:border-accent transition-colors font-body"
+                      />
+                    </div>
+
+                    <div className="space-y-2">
+                      <label htmlFor="email" className="text-white text-xs font-mono uppercase tracking-wider block font-semibold">
+                        Email Address *
+                      </label>
+                      <input
+                        id="email"
+                        type="email"
+                        name="email"
+                        required
+                        value={formData.email}
+                        onChange={handleChange}
+                        placeholder="alex@company.com"
+                        className="w-full bg-[#0a0a0c] border border-white/10 rounded-xl px-4 py-3.5 text-white placeholder:text-text-muted text-sm focus:outline-none focus:border-accent transition-colors font-body"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="space-y-2">
+                      <label htmlFor="company" className="text-white text-xs font-mono uppercase tracking-wider block font-semibold">
+                        Company Name
+                      </label>
+                      <input
+                        id="company"
+                        type="text"
+                        name="company"
+                        value={formData.company}
+                        onChange={handleChange}
+                        placeholder="Acme Corporation"
+                        className="w-full bg-[#0a0a0c] border border-white/10 rounded-xl px-4 py-3.5 text-white placeholder:text-text-muted text-sm focus:outline-none focus:border-accent transition-colors font-body"
+                      />
+                    </div>
+
+                    <div className="space-y-2">
+                      <label htmlFor="service" className="text-white text-xs font-mono uppercase tracking-wider block font-semibold">
+                        Solution Area
+                      </label>
+                      <select
+                        id="service"
+                        name="service"
+                        value={formData.service}
+                        onChange={handleChange}
+                        className="w-full bg-[#0a0a0c] border border-white/10 rounded-xl px-4 py-3.5 text-white text-sm focus:outline-none focus:border-accent transition-colors font-body"
                       >
-                        <ChevronDown size={20} className="text-white/40" />
-                      </motion.div>
-                    </button>
-
-                    <AnimatePresence>
-                      {isDropdownOpen && (
-                        <motion.div
-                          initial={{ opacity: 0, scale: 0.95, y: -10 }}
-                          animate={{ opacity: 1, scale: 1, y: 0 }}
-                          exit={{ opacity: 0, scale: 0.95, y: -10 }}
-                          transition={{ duration: 0.2, ease: "easeOut" }}
-                          className="absolute z-[100] top-full mt-2 w-full bg-[#0a0a0c] border border-white/10 rounded-2xl overflow-hidden shadow-2xl"
-                        >
-                          <div className="py-2">
-                            {services.map((service) => (
-                              <button
-                                key={service}
-                                type="button"
-                                onClick={() => handleServiceSelect(service)}
-                                className={`w-full text-left px-5 py-3.5 text-sm transition-all flex items-center justify-between ${
-                                  formData.service === service 
-                                  ? "bg-accent/10 text-accent font-bold" 
-                                  : "text-white/60 hover:bg-white/5 hover:text-white font-medium"
-                                }`}
-                              >
-                                {service}
-                                {formData.service === service && <Check size={16} />}
-                              </button>
-                            ))}
-                          </div>
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
+                        {services.map((item) => (
+                          <option key={item} value={item} className="bg-black text-white">
+                            {item}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
                   </div>
-                </div>
 
-                <div className="space-y-2">
-                  <label className="text-white/60 text-sm font-medium ml-1 uppercase tracking-wider">Your Message *</label>
-                  <textarea 
-                    name="message"
-                    value={formData.message}
-                    onChange={handleChange}
-                    rows={6}
-                    placeholder="Tell us about your project infrastructure needs..."
-                    className="w-full bg-white/5 border border-white/10 rounded-2xl px-5 py-4 text-white placeholder:text-white/20 focus:outline-none focus:border-accent/50 transition-all resize-none leading-relaxed font-body"
-                  />
-                </div>
-
-                {status === "error" && (
-                  <div className="p-4 bg-red-500/10 border border-red-500/20 rounded-xl text-red-500 text-sm font-mono">
-                    Something went wrong. Please try again.
+                  <div className="space-y-2">
+                    <label htmlFor="message" className="text-white text-xs font-mono uppercase tracking-wider block font-semibold">
+                      Project Details &amp; Objectives *
+                    </label>
+                    <textarea
+                      id="message"
+                      name="message"
+                      rows={5}
+                      required
+                      value={formData.message}
+                      onChange={handleChange}
+                      placeholder="Please outline the business workflow, tools involved, or software requirements..."
+                      className="w-full bg-[#0a0a0c] border border-white/10 rounded-xl px-4 py-3.5 text-white placeholder:text-text-muted text-sm focus:outline-none focus:border-accent transition-colors resize-none leading-relaxed font-body"
+                    />
                   </div>
-                )}
 
-                <button 
-                  onClick={handleContactFormSubmit}
-                  disabled={status === "loading"}
-                  className="w-full bg-accent text-black font-extrabold h-16 rounded-2xl flex items-center justify-center gap-2 hover:brightness-110 active:scale-[0.98] transition-all disabled:opacity-50 disabled:pointer-events-none group shadow-[0_0_20px_rgba(139,92,246,0.1)]"
-                >
-                  {status === "loading" ? (
-                    <Loader2 size={24} className="animate-spin" />
-                  ) : (
-                    <>
-                      Send Message <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
-                    </>
+                  {status === "error" && (
+                    <div className="p-4 bg-red-500/10 border border-red-500/20 rounded-xl text-red-400 text-xs font-mono">
+                      {errorMessage}
+                    </div>
                   )}
-                </button>
 
-                <div className="flex items-center justify-center gap-2 text-white/20 text-xs font-mono uppercase tracking-[0.2em] pt-4 border-t border-white/5">
-                  <Lock size={12} /> Secure transmission · Response within 24hrs
-                </div>
-              </div>
-            )}
+                  <button
+                    type="submit"
+                    disabled={status === "loading"}
+                    className="w-full py-4 bg-accent text-black font-extrabold text-sm rounded-xl flex items-center justify-center gap-2 hover:bg-accent-hover transition-all shadow-[0_0_20px_rgba(139,92,246,0.2)] disabled:opacity-50"
+                  >
+                    {status === "loading" ? (
+                      <Loader2 size={18} className="animate-spin" />
+                    ) : (
+                      <>
+                        <span>Submit Project Specifications</span>
+                        <ArrowRight size={16} />
+                      </>
+                    )}
+                  </button>
+
+                  <div className="flex items-center justify-center gap-2 text-text-muted text-[11px] font-mono pt-2">
+                    <Lock size={12} className="text-accent" />
+                    <span>Confidential Transmission &bull; Data Protected Under Privacy Policy</span>
+                  </div>
+                </form>
+              )}
+            </div>
           </div>
-        </div>
-
-        {/* ADDITIONAL FOOTER INFO */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 pt-20 mt-32 border-t border-white/5 animate-in fade-in duration-1000 delay-500">
-           <div className="space-y-6">
-             <h3 className="text-xl font-display font-bold text-white uppercase tracking-widest">Direct Contact</h3>
-             <div className="space-y-4">
-               <a href="mailto:revoflux.ai@gmail.com" className="flex items-center gap-4 text-white/40 hover:text-accent transition-colors group">
-                 <div className="w-10 h-10 rounded-lg bg-white/5 flex items-center justify-center border border-white/10 transition-colors">
-                   <Mail size={18} />
-                 </div>
-                 <span className="text-[17px] font-medium font-body underline decoration-white/10 underline-offset-4">revoflux.ai@gmail.com</span>
-               </a>
-               <div className="flex items-center gap-4 text-white/40">
-                 <div className="w-10 h-10 rounded-lg bg-white/5 flex items-center justify-center border border-white/10">
-                   <Globe size={18} />
-                 </div>
-                 <span className="text-[17px] font-medium font-body underline decoration-white/10 underline-offset-4">Global Operations · Remote-First</span>
-               </div>
-             </div>
-           </div>
-           <div className="space-y-6">
-              <h3 className="text-xl font-display font-bold text-white uppercase tracking-widest">Why RevoFlux?</h3>
-              <div className="space-y-5">
-                 {[
-                   "Specialized AI Architecture",
-                   "Western Market Standards",
-                   "Scalable Automation Frameworks"
-                 ].map((item, i) => (
-                   <div key={i} className="flex items-center gap-3">
-                     <Check size={16} className="text-accent" />
-                     <span className="text-white/60 font-body">{item}</span>
-                   </div>
-                 ))}
-              </div>
-           </div>
         </div>
       </section>
-
-      {/* Global CSS injections */}
-      <style jsx global>{`
-        @keyframes spin {
-          from { transform: rotate(0deg); }
-          to { transform: rotate(360deg); }
-        }
-        .animate-spin {
-          animation: spin 1s linear infinite;
-        }
-      `}</style>
     </div>
   );
 }

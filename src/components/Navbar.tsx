@@ -1,137 +1,334 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
-import { Menu, X } from "lucide-react";
+import { Menu, X, ChevronDown, Sparkles, Code, Cpu, ArrowRight } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
-const navLinks = [
-  { name: "Home", href: "/" },
-  { name: "Services", href: "/#services" },
-  { name: "Work", href: "/#work" },
-  { name: "Process", href: "/#process" },
+const solutionItems = [
+  {
+    title: "AI Solutions",
+    href: "/solutions/ai-solutions",
+    description: "Custom autonomous agents, LLM pipelines, and predictive models.",
+    icon: Sparkles,
+  },
+  {
+    title: "Software Development",
+    href: "/solutions/software-development",
+    description: "Full-stack web applications, SaaS platforms, MVPs, and APIs.",
+    icon: Code,
+  },
+  {
+    title: "Automation & Integrations",
+    href: "/solutions/automation-integrations",
+    description: "Enterprise workflow orchestration, CRM sync, and custom webhooks.",
+    icon: Cpu,
+  },
 ];
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
-
+  const [solutionsOpen, setSolutionsOpen] = useState(false);
+  const solutionsRef = useRef<HTMLDivElement>(null);
   const pathname = usePathname();
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20);
     window.addEventListener("scroll", handleScroll);
 
-    // Function to handle hash scrolling
-    const scrollToHash = () => {
-      if (window.location.hash) {
-        const id = window.location.hash.substring(1);
-        const el = document.getElementById(id);
-        if (el) {
-          // Increase timeout slightly to allow for page transitions
-          setTimeout(() => {
-            el.scrollIntoView({ behavior: "smooth" });
-          }, 400); 
-        }
-      }
-    };
-
-    // Run on mount and whenever pathname changes
-    scrollToHash();
-
-    // Also listen for hash changes on the same page
-    window.addEventListener("hashchange", scrollToHash);
-
     return () => {
       window.removeEventListener("scroll", handleScroll);
-      window.removeEventListener("hashchange", scrollToHash);
     };
-  }, [pathname]);
+  }, []);
+
+  // Click outside to close dropdown
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (solutionsRef.current && !solutionsRef.current.contains(e.target as Node)) {
+        setSolutionsOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  const closeAllMenus = () => {
+    setIsOpen(false);
+    setSolutionsOpen(false);
+  };
+
+  const isSolutionsActive = pathname.startsWith("/solutions");
 
   return (
-    <nav 
-      className={`fixed top-0 left-0 w-full z-[100] transition-all duration-700 ${
-        scrolled ? "py-4 bg-black/80 backdrop-blur-xl border-b border-white/5" : "py-8 bg-transparent"
+    <header
+      className={`fixed top-0 left-0 w-full z-50 transition-all duration-500 ${
+        scrolled ? "py-4 bg-black/85 backdrop-blur-xl border-b border-white/10" : "py-6 bg-transparent"
       }`}
     >
       <div className="container mx-auto px-6 max-w-[1240px] flex items-center justify-between">
-        {/* Logo Fix: Using mask-image to extract only the 'R' and color it accent green */}
-        <Link href="/" className="flex items-center group relative gap-4 md:gap-5">
-          <div className="relative w-8 h-8 md:w-[34px] md:h-[34px]">
-             <div 
-               className="w-full h-full bg-white shadow-[0_0_15px_rgba(255,255,255,0.5)]"
-               style={{ 
-                 maskImage: "url(/r-logo.png)", 
-                 WebkitMaskImage: "url(/r-logo.png)",
-                 maskSize: "contain",
-                 maskRepeat: "no-repeat",
-                 maskPosition: "center",
-                 filter: "drop-shadow(0 0 12px rgba(255,255,255,0.6))"
-               }} 
-             />
-             <div className="absolute -inset-4 bg-white/10 blur-2xl opacity-30 group-hover:opacity-60 transition-opacity duration-700" />
+        {/* Brand Logo */}
+        <Link 
+          href="/" 
+          onClick={closeAllMenus}
+          className="flex items-center group relative gap-3.5 focus:outline-none" 
+          aria-label="Revoflux Home"
+        >
+          <div className="relative w-8 h-8 md:w-[32px] md:h-[32px]">
+            <div 
+              className="w-full h-full bg-white shadow-[0_0_15px_rgba(255,255,255,0.5)]"
+              style={{ 
+                maskImage: "url(/r-logo.png)", 
+                WebkitMaskImage: "url(/r-logo.png)",
+                maskSize: "contain",
+                maskRepeat: "no-repeat",
+                maskPosition: "center",
+                filter: "drop-shadow(0 0 10px rgba(255,255,255,0.6))"
+              }} 
+            />
+            <div className="absolute -inset-2 bg-accent/20 blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
           </div>
-          <span className="text-[18px] md:text-[21px] font-[950] font-display text-white tracking-[0.2em] uppercase selection:bg-accent selection:text-black drop-shadow-[0_0_15px_rgba(255,255,255,0.4)]">
+          <span className="text-[17px] md:text-[19px] font-[900] font-display text-white tracking-[0.2em] uppercase drop-shadow-[0_0_12px_rgba(255,255,255,0.4)]">
             REVOFLUX
           </span>
         </Link>
 
-        {/* Desktop Links */}
-        <div className="hidden md:flex items-center gap-10">
-          {navLinks.map((link) => (
-            <Link 
-              key={link.name} 
-              href={link.href}
-              className="text-[14px] font-medium text-white/60 hover:text-white transition-colors relative group"
+        {/* Desktop Navigation */}
+        <nav className="hidden md:flex items-center gap-8 text-[14px] font-medium" aria-label="Main Navigation">
+          {/* Solutions Dropdown */}
+          <div className="relative" ref={solutionsRef}>
+            <button
+              type="button"
+              onClick={() => setSolutionsOpen(!solutionsOpen)}
+              onMouseEnter={() => setSolutionsOpen(true)}
+              className={`flex items-center gap-1.5 py-2 transition-colors ${
+                isSolutionsActive || solutionsOpen ? "text-white" : "text-text-secondary hover:text-white"
+              }`}
+              aria-expanded={solutionsOpen}
+              aria-haspopup="true"
             >
-              {link.name}
-              <span className="absolute -bottom-1 left-0 w-0 h-px bg-accent transition-all duration-500 group-hover:w-full"></span>
-            </Link>
-          ))}
-          <Link 
-            href="/contact"
-            className="px-5 py-2.5 bg-white text-black font-semibold text-[13px] rounded-xl hover:bg-white/90 transition-all duration-300 hover:scale-105 active:scale-95"
+              <span>Solutions</span>
+              <ChevronDown
+                size={14}
+                className={`transition-transform duration-300 ${solutionsOpen ? "rotate-180 text-accent" : ""}`}
+              />
+            </button>
+
+            <AnimatePresence>
+              {solutionsOpen && (
+                <motion.div
+                  initial={{ opacity: 0, y: 10, scale: 0.98 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  exit={{ opacity: 0, y: 8, scale: 0.98 }}
+                  transition={{ duration: 0.2, ease: "easeOut" }}
+                  onMouseLeave={() => setSolutionsOpen(false)}
+                  className="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-[340px] bg-[#0a0a0c] border border-white/10 rounded-2xl p-3 shadow-2xl backdrop-blur-2xl"
+                >
+                  <div className="space-y-1">
+                    {solutionItems.map((item) => {
+                      const Icon = item.icon;
+                      const isActive = pathname === item.href;
+                      return (
+                        <Link
+                          key={item.href}
+                          href={item.href}
+                          onClick={closeAllMenus}
+                          className={`flex items-start gap-3 p-3 rounded-xl transition-all ${
+                            isActive
+                              ? "bg-accent/10 border border-accent/20 text-white"
+                              : "hover:bg-white/5 text-text-secondary hover:text-white"
+                          }`}
+                        >
+                          <div className="w-8 h-8 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center shrink-0 mt-0.5 text-accent">
+                            <Icon size={16} />
+                          </div>
+                          <div>
+                            <div className="text-[14px] font-bold text-white mb-0.5">{item.title}</div>
+                            <p className="text-[12px] text-text-muted leading-snug line-clamp-2">
+                              {item.description}
+                            </p>
+                          </div>
+                        </Link>
+                      );
+                    })}
+                  </div>
+                  <div className="mt-2 pt-2 border-t border-white/5 px-2 pb-1 flex justify-between items-center text-[12px]">
+                    <Link
+                      href="/solutions"
+                      onClick={closeAllMenus}
+                      className="text-accent hover:underline font-mono uppercase tracking-wider text-[11px] flex items-center gap-1"
+                    >
+                      All Solutions Overview <ArrowRight size={12} />
+                    </Link>
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+
+          <Link
+            href="/approach"
+            onClick={closeAllMenus}
+            className={`transition-colors py-2 ${
+              pathname === "/approach" ? "text-white font-semibold" : "text-text-secondary hover:text-white"
+            }`}
           >
-            Connect
+            Approach
+          </Link>
+
+          <Link
+            href="/work/demonstrations"
+            onClick={closeAllMenus}
+            className={`transition-colors py-2 ${
+              pathname.startsWith("/work") ? "text-white font-semibold" : "text-text-secondary hover:text-white"
+            }`}
+          >
+            Work &amp; Demos
+          </Link>
+
+          <Link
+            href="/about"
+            onClick={closeAllMenus}
+            className={`transition-colors py-2 ${
+              pathname === "/about" ? "text-white font-semibold" : "text-text-secondary hover:text-white"
+            }`}
+          >
+            About
+          </Link>
+
+          <Link
+            href="/contact"
+            onClick={closeAllMenus}
+            className={`transition-colors py-2 ${
+              pathname === "/contact" ? "text-white font-semibold" : "text-text-secondary hover:text-white"
+            }`}
+          >
+            Contact
+          </Link>
+        </nav>
+
+        {/* Action Button */}
+        <div className="hidden md:flex items-center gap-4">
+          <Link
+            href="/book-a-consultation"
+            onClick={closeAllMenus}
+            className="px-5 py-2.5 bg-accent text-black font-bold text-[13px] rounded-xl hover:bg-accent-hover transition-all duration-300 hover:shadow-[0_0_20px_rgba(139,92,246,0.3)] active:scale-95"
+          >
+            Book a Consultation
           </Link>
         </div>
 
-        {/* Mobile Toggle */}
-        <button className="md:hidden text-white" onClick={() => setIsOpen(!isOpen)}>
+        {/* Mobile Toggle Button */}
+        <button
+          type="button"
+          className="md:hidden text-white p-2 rounded-lg hover:bg-white/5 focus:outline-none"
+          onClick={() => setIsOpen(!isOpen)}
+          aria-expanded={isOpen}
+          aria-label={isOpen ? "Close main menu" : "Open main menu"}
+        >
           {isOpen ? <X size={24} /> : <Menu size={24} />}
         </button>
       </div>
 
-      {/* Mobile Menu */}
+      {/* Mobile Navigation Drawer */}
       <AnimatePresence>
         {isOpen && (
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "100vh" }}
+            animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
-            className="md:hidden absolute top-full left-0 w-full bg-black flex flex-col items-center justify-center gap-10 px-6 overflow-hidden"
+            transition={{ duration: 0.3 }}
+            className="md:hidden bg-black/95 border-b border-white/10 px-6 py-8 overflow-y-auto max-h-[85vh] backdrop-blur-2xl"
           >
-            {navLinks.map((link) => (
-              <Link 
-                key={link.name} 
-                href={link.href}
-                className="text-2xl font-display font-extrabold text-white uppercase tracking-wider"
-                onClick={() => setIsOpen(false)}
+            <div className="flex flex-col gap-5 text-lg font-display">
+              <Link
+                href="/"
+                className="text-white hover:text-accent font-bold"
+                onClick={closeAllMenus}
               >
-                {link.name}
+                Home
               </Link>
-            ))}
-            <Link 
-              href="/contact"
-              className="w-full py-5 bg-accent text-black font-extrabold text-lg rounded-2xl text-center uppercase"
-              onClick={() => setIsOpen(false)}
-            >
-              Contact
-            </Link>
+
+              <div className="pt-2 pb-2 border-y border-white/5">
+                <span className="text-xs uppercase font-mono tracking-widest text-text-muted block mb-3">Solutions</span>
+                <div className="space-y-3 pl-2">
+                  <Link
+                    href="/solutions"
+                    className="block text-sm text-text-secondary hover:text-white font-semibold"
+                    onClick={closeAllMenus}
+                  >
+                    All Solutions Overview
+                  </Link>
+                  <Link
+                    href="/solutions/ai-solutions"
+                    className="block text-sm text-text-secondary hover:text-white"
+                    onClick={closeAllMenus}
+                  >
+                    AI Solutions &amp; Agents
+                  </Link>
+                  <Link
+                    href="/solutions/software-development"
+                    className="block text-sm text-text-secondary hover:text-white"
+                    onClick={closeAllMenus}
+                  >
+                    Software Development &amp; SaaS
+                  </Link>
+                  <Link
+                    href="/solutions/automation-integrations"
+                    className="block text-sm text-text-secondary hover:text-white"
+                    onClick={closeAllMenus}
+                  >
+                    Automation &amp; Integrations
+                  </Link>
+                </div>
+              </div>
+
+              <Link
+                href="/approach"
+                className="text-white hover:text-accent font-bold"
+                onClick={closeAllMenus}
+              >
+                Approach
+              </Link>
+
+              <Link
+                href="/work/demonstrations"
+                className="text-white hover:text-accent font-bold"
+                onClick={closeAllMenus}
+              >
+                Work &amp; Demonstrations
+              </Link>
+
+              <Link
+                href="/about"
+                className="text-white hover:text-accent font-bold"
+                onClick={closeAllMenus}
+              >
+                About
+              </Link>
+
+              <Link
+                href="/contact"
+                className="text-white hover:text-accent font-bold"
+                onClick={closeAllMenus}
+              >
+                Contact
+              </Link>
+
+              <div className="pt-4 flex flex-col gap-3">
+                <Link
+                  href="/book-a-consultation"
+                  className="w-full py-4 bg-accent text-black font-extrabold text-sm rounded-xl text-center uppercase tracking-wider shadow-lg"
+                  onClick={closeAllMenus}
+                >
+                  Book a Consultation
+                </Link>
+              </div>
+            </div>
           </motion.div>
         )}
       </AnimatePresence>
-    </nav>
+    </header>
   );
 }

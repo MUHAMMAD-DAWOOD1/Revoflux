@@ -1,94 +1,87 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { CheckCircle2, TrendingUp, Clock, ShieldCheck, Zap, BarChart3 } from "lucide-react";
+import { CheckCircle2, TrendingUp, Clock, ShieldCheck, Zap, BarChart3, ArrowRight } from "lucide-react";
+import Link from "next/link";
 
-const benefits = [
+const principles = [
   {
-    icon: <TrendingUp className="text-accent" size={24} />,
-    title: "Increased Efficiency",
-    description: "Eliminate manual bottlenecks and accelerate your business processes by up to 300% using our custom AI logic."
+    icon: <TrendingUp className="text-accent" size={22} />,
+    title: "High-Leverage Engineering",
+    description: "Eliminate operational friction and manual bottlenecks through deterministic automation logic and intelligent software systems."
   },
   {
-    icon: <Clock className="text-accent" size={24} />,
-    title: "Time Recovery",
-    description: "Our systems handle the heavy lifting, giving your team an average of 15+ hours back per week to focus on high-impact decisions."
+    icon: <Clock className="text-accent" size={22} />,
+    title: "Strategic Time Recovery",
+    description: "Offload repetitive data processing, scheduling, and system synchronization so key team members focus on core business strategy."
   },
   {
-    icon: <ShieldCheck className="text-accent" size={24} />,
-    title: "Logic Precision",
-    description: "Built for Western markets with 100% accurate data processing, ensuring your business logic is never compromised."
+    icon: <ShieldCheck className="text-accent" size={22} />,
+    title: "Deterministic Logic & Safety",
+    description: "Rigorous boundary enforcement, human-in-the-loop checkpoints, and comprehensive data validation built into every integration."
   },
   {
-    icon: <Zap className="text-accent" size={24} />,
-    title: "Rapid Deployment",
-    description: "Zero-downtime integration into your existing stack. We build and deploy within weeks, not months."
+    icon: <Zap className="text-accent" size={22} />,
+    title: "Rapid Milestone Execution",
+    description: "Agile, transparent delivery cycles. We deploy functional, tested software milestones progressively with zero unnecessary overhead."
   },
   {
-    icon: <BarChart3 className="text-accent" size={24} />,
-    title: "Scalable Growth",
-    description: "As your volume increases, our AI scales with you automatically, maintaining peak performance without overhead."
+    icon: <BarChart3 className="text-accent" size={22} />,
+    title: "Architectural Scalability",
+    description: "Modular codebases and distributed cloud services designed to maintain peak performance and low latency as transaction volume expands."
   },
   {
-    icon: <CheckCircle2 className="text-accent" size={24} />,
-    title: "Continuous Optimization",
-    description: "Built-in audit loops and auto-refining modules that get smarter over time, keeping you ahead of the competition."
+    icon: <CheckCircle2 className="text-accent" size={22} />,
+    title: "Continuous Observability",
+    description: "Built-in error logging, performance monitoring, and audit trails ensuring your mission-critical operations remain transparent and stable."
   }
 ];
 
 export default function Benefits() {
   return (
-    <section id="about" className="relative w-full py-32 bg-black overflow-hidden">
+    <section id="principles" className="relative w-full py-28 bg-black overflow-hidden border-b border-white/5">
       <div className="container mx-auto px-6 max-w-[1240px]">
         {/* Header */}
-        <div className="max-w-2xl mb-24">
-          <motion.div 
-            initial={{ opacity: 0, y: 15 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "0px 0px -50px 0px" }}
-            transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
-            className="inline-flex items-center px-4 py-1.5 rounded-full border border-white/10 bg-white/5 text-white/80 font-mono text-[11px] mb-6 tracking-widest uppercase">
-            Platform Benefits
-          </motion.div>
-          <motion.h2 
-            initial={{ opacity: 0, y: 15 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "0px 0px -50px 0px" }}
-            transition={{ duration: 1.2, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-            className="font-display font-[800] text-white leading-[1.1] mb-8 tracking-tight">
-            <span className="text-[32px] md:text-[44px] lg:text-[52px] mr-3">Why companies</span>
-            <span className="text-[32px] md:text-[44px] lg:text-[52px] text-gradient block">Choose RevoFlux.</span>
-          </motion.h2>
-          <motion.p 
-            initial={{ opacity: 0, y: 15 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.2, margin: "0px 0px -50px 0px" }}
-            transition={{ duration: 1.2, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-            style={{ willChange: "transform, opacity" }}
-            className="text-[17px] font-body text-text-secondary leading-relaxed">
-            Our autonomous AI frameworks are engineered for reliability and high-speed execution in competitive markets.
-          </motion.p>
+        <div className="max-w-2xl mb-20">
+          <div className="inline-flex items-center px-4 py-1.5 rounded-full border border-white/10 bg-white/5 text-accent font-mono text-[11px] mb-6 tracking-widest uppercase font-semibold">
+            Engineering Values
+          </div>
+          <h2 className="font-display font-[900] text-white leading-[1.1] mb-6 tracking-tight text-[32px] md:text-[46px] lg:text-[54px]">
+            Why Modern Businesses <span className="text-gradient">Choose Revoflux.</span>
+          </h2>
+          <p className="text-[16px] md:text-[18px] font-body text-text-secondary leading-relaxed">
+            We deliver reliable, production-ready software solutions built with architectural discipline, high security standards, and measurable business value.
+          </p>
         </div>
 
-        {/* Benefits Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {benefits.map((benefit, index) => (
+        {/* Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+          {principles.map((principle, index) => (
             <motion.div 
               key={index}
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 15 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.1, margin: "0px 0px -50px 0px" }}
-              transition={{ duration: 1.2, delay: index * 0.1, ease: [0.16, 1, 0.3, 1] }}
-              style={{ willChange: "transform, opacity" }}
-              className="premium-card p-8 group"
+              viewport={{ once: true, amount: 0.1 }}
+              transition={{ duration: 0.5, delay: index * 0.08 }}
+              className="bg-[#050505] border border-white/10 rounded-2xl p-7 group hover:border-white/20 transition-all"
             >
-              <div className="w-12 h-12 rounded-full bg-white/5 border border-white/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-500 text-white/80">
-                {benefit.icon}
+              <div className="w-11 h-11 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center mb-6 group-hover:scale-105 transition-transform duration-300">
+                {principle.icon}
               </div>
-              <h3 className="text-white font-display font-bold text-xl mb-4">{benefit.title}</h3>
-              <p className="text-text-secondary text-[15px] leading-relaxed">{benefit.description}</p>
+              <h3 className="text-white font-display font-bold text-lg mb-3">{principle.title}</h3>
+              <p className="text-text-secondary text-[14px] leading-relaxed font-body">{principle.description}</p>
             </motion.div>
           ))}
+        </div>
+
+        {/* Link to About */}
+        <div className="text-center pt-4">
+          <Link
+            href="/about"
+            className="inline-flex items-center gap-2 text-accent hover:text-white font-mono text-xs uppercase tracking-widest transition-colors font-semibold"
+          >
+            Learn more about our company &amp; team <ArrowRight size={14} />
+          </Link>
         </div>
       </div>
     </section>

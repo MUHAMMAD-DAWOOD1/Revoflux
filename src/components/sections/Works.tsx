@@ -1,125 +1,125 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { useRef, useEffect, useState } from "react";
-import { ArrowUpRight } from "lucide-react";
+import Link from "next/link";
+import { ArrowRight, Database, Sparkles, Workflow } from "lucide-react";
 
-const works = [
+const demonstrations = [
   {
-    title: "AI-driven forecasting cut inventory waste by 40% for a U.S. e-commerce brand",
-    description: "A U.S.-based e-commerce company struggled with unpredictable demand cycles. We integrated automated predictive models into their supply chain, drastically reducing overstock and optimizing logistics.",
-    impact: ["• 80% Error Reduction", "• 30% Faster Delivery", "• 60+ Hours Saved"],
-    client: "REVOFLUX",
-    image: "/suitcase.jpg",
+    category: "Technical Demonstration",
+    badge: "DEMO",
+    title: "Autonomous Multi-Source Lead Scoring & Enrichment Pipeline",
+    description: "An automated pipeline that ingests raw inbound company domains, queries enrichment endpoints asynchronously, scores fit using deterministic heuristic weights, and updates CRM records with zero manual intervention.",
+    architecture: ["Next.js Server Actions", "Type-safe Webhook Receiver", "Asynchronous Queue Dispatcher", "CRM API Integration"],
+    icon: Workflow,
+    href: "/work/demonstrations#lead-pipeline"
   },
   {
-    title: "Automated threat detection halted 99% of fraud attempts for a financial services firm",
-    description: "A mid-sized financial services firm needed real-time transaction security. Our custom AI monitoring system identifies and blocks fraudulent transactions instantly with zero latency.",
-    impact: ["• 99% Fraud Prevented", "• Zero Downtime", "• Real-time Alerts"],
-    client: "REVOFLUX",
-    image: "/credit-card.jpg",
+    category: "Working Prototype",
+    badge: "PROTOTYPE",
+    title: "Context-Aware Knowledge Retrieval Assistant with Guardrails",
+    description: "An enterprise question-answering prototype utilizing retrieval-augmented generation over indexed markdown documentation. Features rigorous boundary guardrails preventing hallucinations and context escape.",
+    architecture: ["Vector Similarity Search", "Document Chunking Pipeline", "Hallucination Guardrails", "Streaming Response Interface"],
+    icon: Sparkles,
+    href: "/work/demonstrations#knowledge-assistant"
   },
   {
-    title: "Smart logistics routing improved warehouse efficiency by 50% for a freight company",
-    description: "A regional freight and warehousing company faced severe operational bottlenecks. We deployed AI pathfinding algorithms to optimize routes and daily schedules intelligently.",
-    impact: ["• 50% Efficiency Boost", "• 2x Output Volume", "• 45+ Hours Saved"],
-    client: "REVOFLUX",
-    image: "/forklift.jpg",
+    category: "System Architecture",
+    badge: "ARCHITECTURE",
+    title: "Resilient Multi-Tenant SaaS Engine with Distributed Billing",
+    description: "A production-ready SaaS baseline featuring tenant isolation, secure authentication, role-based access control (RBAC), and webhook-driven subscription life-cycle management.",
+    architecture: ["PostgreSQL / Prisma", "JWT Session Management", "Stripe Webhook Handlers", "Modular Component System"],
+    icon: Database,
+    href: "/work/demonstrations#saas-engine"
   }
 ];
 
 export default function Works() {
-  const [width, setWidth] = useState(0);
-  const carousel = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (carousel.current) {
-       setWidth(carousel.current.scrollWidth - carousel.current.offsetWidth);
-    }
-  }, []);
-
   return (
-    <section id="work" className="relative w-full pt-32 pb-16 bg-black overflow-hidden border-t border-white/5">
-      <div className="container mx-auto px-6 max-w-[1240px] mb-16">
-        <div className="flex flex-col md:flex-row justify-between items-end gap-8">
-          <div className="max-w-3xl">
-            <motion.div 
-              initial={{ opacity: 0, y: 15 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "0px 0px -50px 0px" }}
-              className="inline-flex items-center px-4 py-1.5 rounded-full border border-white/10 bg-white/5 text-[#8b5cf6] font-mono text-[11px] mb-6 tracking-widest uppercase">
-              Case Studies
-            </motion.div>
-            <motion.h2 
-              initial={{ opacity: 0, y: 15 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "0px 0px -50px 0px" }}
-              transition={{ delay: 0.1 }}
-              className="font-display font-[800] text-white leading-[1.1] tracking-tight mb-6">
-              <span className="text-[32px] md:text-[44px] lg:text-[52px]">See How Smart AI Automation Transforms Businesses</span>
-            </motion.h2>
-            <motion.p
-              initial={{ opacity: 0, y: 15 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "0px 0px -50px 0px" }}
-              transition={{ delay: 0.2 }}
-              className="text-white/50 text-[16px] md:text-[18px] max-w-2xl leading-relaxed"
-            >
-              See how AI automation streamlines operations, boosts productivity and drives growth.
-            </motion.p>
+    <section id="work" className="relative w-full py-28 bg-black overflow-hidden border-b border-white/5">
+      <div className="container mx-auto px-6 max-w-[1240px]">
+        {/* Section Header */}
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-16 gap-6">
+          <div className="max-w-2xl">
+            <div className="inline-flex items-center px-4 py-1.5 rounded-full border border-white/10 bg-white/5 text-accent font-mono text-[11px] mb-6 tracking-widest uppercase font-semibold">
+              Evidence &amp; Capabilities
+            </div>
+            <h2 className="font-display font-[900] text-white leading-[1.1] tracking-tight text-[32px] md:text-[46px] lg:text-[54px]">
+              Technical Demonstrations <span className="text-gradient">&amp; Proof.</span>
+            </h2>
+            <p className="text-text-secondary text-[16px] md:text-[18px] leading-relaxed mt-4">
+              Explore concrete engineering proofs, system prototypes, and architectural patterns built by Revoflux to validate real-world technical execution.
+            </p>
           </div>
+          <Link
+            href="/work/demonstrations"
+            className="inline-flex items-center gap-2 text-accent hover:text-white font-mono text-xs uppercase tracking-widest transition-colors font-semibold py-2"
+          >
+            View all demonstrations <ArrowRight size={14} />
+          </Link>
         </div>
-      </div>
 
-      <div className="w-full px-6 mx-auto">
-         <motion.div ref={carousel} className="cursor-grab overflow-hidden active:cursor-grabbing pb-8">
-            <motion.div 
-               drag="x" 
-               dragConstraints={{ right: 0, left: -width - 200 }} 
-               whileTap={{ cursor: "grabbing" }}
-               className="flex gap-6 md:gap-10 w-max"
-            >
-               {[...works, ...works, ...works, ...works, ...works, ...works].map((work, index) => (
-                  <motion.div 
-                     key={index}
-                     className="w-[85vw] md:w-[800px] lg:w-[960px] bg-[#050505] rounded-[32px] border border-white/5 flex flex-col md:flex-row overflow-hidden relative group shrink-0"
+        {/* 3 Demonstrations Cards */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          {demonstrations.map((item, index) => {
+            const Icon = item.icon;
+            return (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.1 }}
+                transition={{ duration: 0.6, delay: index * 0.1 }}
+                className="bg-[#050505] rounded-3xl border border-white/10 p-7 flex flex-col justify-between hover:border-white/20 transition-all group relative overflow-hidden"
+              >
+                <div className="absolute top-0 right-0 w-48 h-48 bg-accent/5 blur-[50px] pointer-events-none group-hover:bg-accent/10 transition-colors" />
+
+                <div>
+                  <div className="flex items-center justify-between mb-6">
+                    <span className="text-[10px] font-mono uppercase bg-accent/10 text-accent border border-accent/20 px-2.5 py-1 rounded-full font-bold tracking-wider">
+                      {item.badge}
+                    </span>
+                    <div className="w-9 h-9 rounded-xl bg-white/5 flex items-center justify-center text-text-secondary group-hover:text-accent transition-colors">
+                      <Icon size={18} />
+                    </div>
+                  </div>
+
+                  <span className="text-text-muted text-[11px] font-mono uppercase tracking-wider block mb-2">
+                    {item.category}
+                  </span>
+
+                  <h3 className="text-white text-xl font-bold font-display leading-snug mb-4 group-hover:text-accent transition-colors">
+                    {item.title}
+                  </h3>
+
+                  <p className="text-text-secondary text-[14px] leading-relaxed mb-6 font-body">
+                    {item.description}
+                  </p>
+                </div>
+
+                <div className="pt-6 border-t border-white/5">
+                  <span className="text-[11px] font-mono text-text-muted block mb-3 uppercase tracking-wider">
+                    Core Technical Components:
+                  </span>
+                  <div className="flex flex-wrap gap-1.5 mb-6">
+                    {item.architecture.map((tech, i) => (
+                      <span key={i} className="text-[10px] font-mono bg-[#0a0a0c] border border-white/5 text-text-secondary px-2 py-1 rounded-md">
+                        {tech}
+                      </span>
+                    ))}
+                  </div>
+
+                  <Link
+                    href={item.href}
+                    className="inline-flex items-center gap-1.5 text-accent text-xs font-mono uppercase tracking-wider hover:underline font-semibold"
                   >
-                     <div className="w-full md:w-5/12 p-2">
-                        <div className="w-full h-[300px] md:h-full min-h-[400px] rounded-[24px] overflow-hidden relative bg-[#0a0a0c]">
-                           <div className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105" style={{ backgroundImage: `url(${work.image})`, opacity: 0.8 }} />
-                           <div className="absolute inset-0 bg-black/20" />
-                        </div>
-                     </div>
-                     <div className="w-full md:w-7/12 p-8 md:p-12 lg:p-16 flex flex-col justify-center">
-                        <div className="mb-6 md:mb-10 flex justify-start md:justify-end w-full">
-                           <span className="text-white/90 font-display font-extrabold text-[20px] md:text-[24px] tracking-wide">{work.client}</span>
-                        </div>
-                        <h3 className="text-white text-[24px] md:text-[28px] lg:text-[34px] font-bold leading-[1.2] mb-6">{work.title}</h3>
-                        <p className="text-white/50 text-[15px] leading-relaxed mb-8 md:mb-12 max-w-lg">{work.description}</p>
-                        
-                        <div>
-                           <span className="text-white text-[16px] font-bold mb-5 block">Impact :</span>
-                           <ul className="space-y-3">
-                              {work.impact.map((point, i) => (
-                                 <li key={i} className="text-white/60 text-[14px]">
-                                    {point}
-                                 </li>
-                              ))}
-                           </ul>
-                        </div>
-                     </div>
-                  </motion.div>
-               ))}
-            </motion.div>
-         </motion.div>
-      </div>
-
-      <div className="w-full flex justify-center mt-6">
-         <div className="flex items-center gap-4 text-white/30 text-[11px] font-mono tracking-[0.2em] uppercase">
-            <span>&larr;</span>
-            <span className="opacity-70">Drag to explore</span>
-            <span>&rarr;</span>
-         </div>
+                    Inspect architecture details <ArrowRight size={12} />
+                  </Link>
+                </div>
+              </motion.div>
+            );
+          })}
+        </div>
       </div>
     </section>
   );

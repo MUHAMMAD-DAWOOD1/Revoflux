@@ -1,104 +1,77 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { ArrowUpRight, BarChart2, Users, ShoppingCart, Zap } from "lucide-react";
+import { ArrowUpRight, ShoppingCart, Zap, Users } from "lucide-react";
+import Link from "next/link";
 
-const caseStudies = [
+const proofConcepts = [
   {
-    title: "Inventory Intelligence",
-    client: "Global Logistics Group",
-    metric: "40% Less",
-    subMetric: "Inventory Waste",
-    description: "Implemented an autonomous predictive logic engine that synchronized global supply chains with real-time demand signals.",
-    icon: <ShoppingCart size={24} className="text-accent" />
+    title: "Autonomous Supply Chain Mapping",
+    category: "Workflow Architecture",
+    description: "Multi-tiered inventory forecasting algorithm synchronizing distributed warehouse signals with real-time sales APIs.",
+    icon: ShoppingCart
   },
   {
-    title: "Rapid Product Design",
-    client: "Future Mobility Corp",
-    metric: "35% Faster",
-    subMetric: "Production Speed",
-    description: "Deployment of custom generative design agents accelerated product iteration cycles from months to just weeks.",
-    icon: <Zap size={24} className="text-accent" />
+    title: "High-Throughput SaaS Pipeline",
+    category: "Software Development",
+    description: "Resilient serverless microservices architecture supporting multi-tenant user authentication and asynchronous webhook processing.",
+    icon: Zap
   },
   {
-    title: "Operational Retention",
-    client: "TechScale Enterprise",
-    metric: "15% Lower",
-    subMetric: "Employee Turnover",
-    description: "AI-driven schedule optimization and workload management significantly reduced burnout across distributed teams.",
-    icon: <Users size={24} className="text-accent" />
+    title: "Operational Automation Engine",
+    category: "Systems Integration",
+    description: "Automated task distribution and intelligent CRM routing designed to eliminate manual intervention in client onboarding.",
+    icon: Users
   }
 ];
 
 export default function CaseStudies() {
   return (
-    <section id="work" className="relative w-full py-32 bg-black border-y border-white/5">
+    <section id="case-studies" className="relative w-full py-28 bg-black border-y border-white/5">
       <div className="container mx-auto px-6 max-w-[1240px]">
-        {/* Header */}
-        <div className="flex flex-col md:flex-row justify-between items-end mb-24 gap-8">
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-16 gap-6">
           <div className="max-w-2xl">
-            <motion.div 
-              initial={{ opacity: 0, y: 15 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.2, margin: "0px 0px -50px 0px" }}
-              transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
-              style={{ willChange: "transform, opacity" }}
-              className="inline-flex items-center px-4 py-1.5 rounded-full border border-accent/20 bg-accent/8 text-accent font-mono text-[11px] mb-6 tracking-widest uppercase">
-              Latest Work
-            </motion.div>
-            <motion.h2 
-              initial={{ opacity: 0, y: 15 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.2, margin: "0px 0px -50px 0px" }}
-              transition={{ duration: 1.2, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-              style={{ willChange: "transform, opacity" }}
-              className="font-display font-[800] text-white leading-[1.1] tracking-tighter">
-              <span className="text-[28px] md:text-[36px] lg:text-[42px] lowercase mr-3">Real impact</span>
-              <span className="text-[32px] md:text-[44px] lg:text-[52px] text-glow block">For Modern Teams</span>
-            </motion.h2>
+            <div className="inline-flex items-center px-4 py-1.5 rounded-full border border-white/10 bg-white/5 text-accent font-mono text-[11px] mb-6 tracking-widest uppercase font-semibold">
+              Capabilities In Practice
+            </div>
+            <h2 className="font-display font-[900] text-white leading-[1.1] text-[32px] md:text-[46px] lg:text-[54px] tracking-tight">
+              Applied Engineering <span className="text-gradient">Concepts.</span>
+            </h2>
           </div>
-          
-          <motion.button 
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            className="flex items-center gap-2 text-accent font-mono text-[13px] tracking-widest uppercase mb-4"
+          <Link 
+            href="/work/demonstrations"
+            className="flex items-center gap-2 text-accent font-mono text-[13px] tracking-wider uppercase hover:underline font-semibold"
           >
-            All case studies <ArrowUpRight size={14} />
-          </motion.button>
+            All Technical Demonstrations <ArrowUpRight size={14} />
+          </Link>
         </div>
 
-        {/* Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {caseStudies.map((study, index) => (
-            <motion.div 
-              key={index}
-              initial={{ opacity: 0, scale: 0.98 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true, amount: 0.1, margin: "0px 0px -50px 0px" }}
-              transition={{ duration: 1.2, delay: index * 0.1, ease: [0.16, 1, 0.3, 1] }}
-              style={{ willChange: "transform, opacity" }}
-              className="premium-card p-1 group overflow-hidden"
-            >
-              <div className="p-8 h-full flex flex-col justify-between">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {proofConcepts.map((item, index) => {
+            const Icon = item.icon;
+            return (
+              <motion.div 
+                key={index}
+                initial={{ opacity: 0, y: 15 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.1 }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                className="bg-[#050505] border border-white/10 rounded-2xl p-7 flex flex-col justify-between hover:border-white/20 transition-all group"
+              >
                 <div>
-                  <div className="flex justify-between items-start mb-12">
-                     <div className="w-12 h-12 rounded-full bg-white/5 border border-white/10 flex items-center justify-center">
-                        {study.icon}
-                     </div>
-                     <ArrowUpRight size={20} className="text-white/20 group-hover:text-accent transition-colors" />
+                  <div className="flex justify-between items-start mb-8">
+                    <div className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-accent">
+                      <Icon size={20} />
+                    </div>
+                    <ArrowUpRight size={18} className="text-white/30 group-hover:text-accent transition-colors" />
                   </div>
-                  <h3 className="text-white text-3xl font-display font-extrabold mb-2 tracking-tighter">{study.metric}</h3>
-                  <p className="text-accent text-[11px] font-mono uppercase tracking-widest mb-8">{study.subMetric}</p>
-                  <p className="text-text-secondary text-[14px] leading-relaxed line-clamp-3 mb-8">{study.description}</p>
+                  <span className="text-text-muted text-[11px] font-mono uppercase tracking-wider block mb-2">{item.category}</span>
+                  <h3 className="text-white text-xl font-bold font-display mb-3">{item.title}</h3>
+                  <p className="text-text-secondary text-[14px] leading-relaxed mb-6">{item.description}</p>
                 </div>
-                
-                <div className="pt-8 border-t border-white/5">
-                   <p className="text-white font-bold text-[13px]">{study.title}</p>
-                   <p className="text-text-muted text-[11px] mt-1 font-mono uppercase tracking-wider">{study.client}</p>
-                </div>
-              </div>
-            </motion.div>
-          ))}
+              </motion.div>
+            );
+          })}
         </div>
       </div>
     </section>
