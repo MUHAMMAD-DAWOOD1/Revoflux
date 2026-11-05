@@ -50,13 +50,13 @@ export default function Footer() {
 
   return (
     <footer className="bg-black pt-20 pb-12 overflow-hidden border-t border-white/10" aria-label="Site Footer">
-      <div className="container mx-auto px-6 max-w-[1240px]">
+      <div className="container mx-auto px-6 max-w-[1240px] 2xl:max-w-[1400px]">
         {/* Top Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12 mb-20">
           
           {/* Brand & Newsletter (Span 2) */}
           <div className="lg:col-span-2">
-            <Link href="/" className="flex items-center mb-6 group gap-3.5 focus:outline-none w-fit" aria-label="Revoflux Home">
+            <Link href="/" className="flex items-center mb-6 group gap-3.5 focus-visible:ring-2 focus-visible:ring-accent rounded-lg w-fit" aria-label="Revoflux Home">
               <div className="relative w-8 h-8 md:w-[32px] md:h-[32px]">
                 <div 
                   className="w-full h-full bg-white shadow-[0_0_15px_rgba(255,255,255,0.5)]"
@@ -104,12 +104,12 @@ export default function Footer() {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="you@company.com" 
-                    className="w-full bg-[#050505] border border-white/10 rounded-xl px-4 py-3 text-[13px] text-text-primary focus:outline-none focus:border-accent transition-colors font-body"
+                    className="w-full bg-[#050505] border border-white/10 rounded-xl px-4 py-3 text-[13px] text-text-primary focus:outline-none focus:border-accent transition-colors font-body focus-visible:ring-2 focus-visible:ring-accent"
                   />
                   <button 
                     type="submit" 
                     disabled={status === "loading"}
-                    className="bg-accent text-black font-extrabold rounded-xl px-4 py-3 text-[12px] hover:bg-accent-hover transition-all font-mono uppercase tracking-wider flex items-center justify-center shrink-0 disabled:opacity-50"
+                    className="bg-accent text-black font-extrabold rounded-xl px-4 py-3 text-[12px] hover:bg-accent-hover transition-all font-mono uppercase tracking-wider flex items-center justify-center shrink-0 disabled:opacity-50 focus-visible:ring-2 focus-visible:ring-accent"
                   >
                     {status === "loading" ? (
                       <Loader2 size={16} className="animate-spin" />
@@ -131,11 +131,11 @@ export default function Footer() {
           <div className="flex flex-col">
             <h4 className="text-white font-display font-bold text-[11px] mb-6 tracking-[0.2em] uppercase opacity-50">Solutions</h4>
             <ul className="flex flex-col gap-3 font-mono text-[12px] tracking-wider uppercase text-text-secondary">
-              <li><Link href="/solutions" className="hover:text-white transition-colors">Overview</Link></li>
-              <li><Link href="/solutions/ai-solutions" className="hover:text-white transition-colors">AI Solutions</Link></li>
-              <li><Link href="/solutions/software-development" className="hover:text-white transition-colors">Software Dev</Link></li>
-              <li><Link href="/solutions/automation-integrations" className="hover:text-white transition-colors">Automation</Link></li>
-              <li><Link href="/work/demonstrations" className="hover:text-white transition-colors">Demonstrations</Link></li>
+              <li><Link href="/solutions" className="hover:text-white transition-colors focus-visible:ring-2 focus-visible:ring-accent rounded">Overview</Link></li>
+              <li><Link href="/solutions/ai-solutions" className="hover:text-white transition-colors focus-visible:ring-2 focus-visible:ring-accent rounded">AI Solutions</Link></li>
+              <li><Link href="/solutions/software-development" className="hover:text-white transition-colors focus-visible:ring-2 focus-visible:ring-accent rounded">Software Dev</Link></li>
+              <li><Link href="/solutions/automation-integrations" className="hover:text-white transition-colors focus-visible:ring-2 focus-visible:ring-accent rounded">Automation</Link></li>
+              <li><Link href="/work/demonstrations" className="hover:text-white transition-colors focus-visible:ring-2 focus-visible:ring-accent rounded">Demonstrations</Link></li>
             </ul>
           </div>
 
@@ -143,10 +143,10 @@ export default function Footer() {
           <div className="flex flex-col">
             <h4 className="text-white font-display font-bold text-[11px] mb-6 tracking-[0.2em] uppercase opacity-50">Company</h4>
             <ul className="flex flex-col gap-3 font-mono text-[12px] tracking-wider uppercase text-text-secondary">
-              <li><Link href="/about" className="hover:text-white transition-colors">About Us</Link></li>
-              <li><Link href="/approach" className="hover:text-white transition-colors">Our Approach</Link></li>
-              <li><Link href="/contact" className="hover:text-white transition-colors">Contact</Link></li>
-              <li><Link href="/book-a-consultation" className="hover:text-white transition-colors">Book a Call</Link></li>
+              <li><Link href="/about" className="hover:text-white transition-colors focus-visible:ring-2 focus-visible:ring-accent rounded">About Us</Link></li>
+              <li><Link href="/approach" className="hover:text-white transition-colors focus-visible:ring-2 focus-visible:ring-accent rounded">Our Approach</Link></li>
+              <li><Link href="/contact" className="hover:text-white transition-colors focus-visible:ring-2 focus-visible:ring-accent rounded">Contact</Link></li>
+              <li><Link href="/book-a-consultation" className="hover:text-white transition-colors focus-visible:ring-2 focus-visible:ring-accent rounded">Book a Call</Link></li>
             </ul>
           </div>
 
@@ -154,15 +154,15 @@ export default function Footer() {
           <div className="flex flex-col">
             <h4 className="text-white font-display font-bold text-[11px] mb-6 tracking-[0.2em] uppercase opacity-50">Legal &amp; Connect</h4>
             <ul className="flex flex-col gap-3 font-mono text-[12px] tracking-wider uppercase text-text-secondary mb-6">
-              <li><Link href="/privacy" className="hover:text-white transition-colors">Privacy Policy</Link></li>
-              <li><Link href="/terms" className="hover:text-white transition-colors">Terms of Service</Link></li>
-              <li><Link href="/contact" className="hover:text-white transition-colors">Support</Link></li>
+              <li><Link href="/privacy" className="hover:text-white transition-colors focus-visible:ring-2 focus-visible:ring-accent rounded">Privacy Policy</Link></li>
+              <li><Link href="/terms" className="hover:text-white transition-colors focus-visible:ring-2 focus-visible:ring-accent rounded">Terms of Service</Link></li>
+              <li><Link href="/contact" className="hover:text-white transition-colors focus-visible:ring-2 focus-visible:ring-accent rounded">Support</Link></li>
             </ul>
 
             <div className="flex items-center gap-4">
               <a 
                 href="mailto:revoflux.ai@gmail.com"
-                className="w-9 h-9 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-text-secondary hover:text-white hover:border-accent transition-all"
+                className="w-9 h-9 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-text-secondary hover:text-white hover:border-accent transition-all focus-visible:ring-2 focus-visible:ring-accent"
                 title="Email Revoflux"
                 aria-label="Send email to Revoflux"
               >
@@ -172,7 +172,7 @@ export default function Footer() {
                 href="https://www.linkedin.com/in/muhammad-dawood-dev" 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="w-9 h-9 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-text-secondary hover:text-white hover:border-accent transition-all"
+                className="w-9 h-9 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-text-secondary hover:text-white hover:border-accent transition-all focus-visible:ring-2 focus-visible:ring-accent"
                 title="LinkedIn"
                 aria-label="LinkedIn profile"
               >
@@ -182,7 +182,7 @@ export default function Footer() {
                 href="https://x.com/revoflux" 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="w-9 h-9 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-text-secondary hover:text-white hover:border-accent transition-all"
+                className="w-9 h-9 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-text-secondary hover:text-white hover:border-accent transition-all focus-visible:ring-2 focus-visible:ring-accent"
                 title="X (Twitter)"
                 aria-label="X profile"
               >
@@ -192,7 +192,7 @@ export default function Footer() {
                 href="https://instagram.com/revoflux" 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="w-9 h-9 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-text-secondary hover:text-white hover:border-accent transition-all"
+                className="w-9 h-9 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-text-secondary hover:text-white hover:border-accent transition-all focus-visible:ring-2 focus-visible:ring-accent"
                 title="Instagram"
                 aria-label="Instagram profile"
               >

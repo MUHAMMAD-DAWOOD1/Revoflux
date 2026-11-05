@@ -249,7 +249,8 @@ function ContinuousOptimizationCard() {
 export default function Process() {
   return (
     <section id="process" className="relative w-full py-28 bg-black overflow-hidden border-b border-white/5">
-      <div className="container mx-auto px-6 max-w-[1240px]">
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[350px] bg-accent/5 blur-[140px] pointer-events-none rounded-full" aria-hidden="true" />
+      <div className="container mx-auto px-6 max-w-[1240px] 2xl:max-w-[1400px]">
         
         {/* Header */}
         <div className="text-center max-w-3xl mx-auto mb-20">

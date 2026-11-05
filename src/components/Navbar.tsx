@@ -32,6 +32,7 @@ export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [solutionsOpen, setSolutionsOpen] = useState(false);
   const solutionsRef = useRef<HTMLDivElement>(null);
+  const toggleButtonRef = useRef<HTMLButtonElement>(null);
   const pathname = usePathname();
 
   useEffect(() => {
@@ -43,16 +44,45 @@ export default function Navbar() {
     };
   }, []);
 
-  // Click outside to close dropdown
+  // Lock body scroll when mobile menu is open
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [isOpen]);
+
+  // Click outside to close dropdown & Escape key accessibility
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
       if (solutionsRef.current && !solutionsRef.current.contains(e.target as Node)) {
         setSolutionsOpen(false);
       }
     };
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        if (isOpen) {
+          setIsOpen(false);
+          toggleButtonRef.current?.focus();
+        }
+        if (solutionsOpen) {
+          setSolutionsOpen(false);
+        }
+      }
+    };
+
     document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
+    document.addEventListener("keydown", handleKeyDown);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [isOpen, solutionsOpen]);
 
   const closeAllMenus = () => {
     setIsOpen(false);
@@ -64,15 +94,15 @@ export default function Navbar() {
   return (
     <header
       className={`fixed top-0 left-0 w-full z-50 transition-all duration-500 ${
-        scrolled ? "py-4 bg-black/85 backdrop-blur-xl border-b border-white/10" : "py-6 bg-transparent"
+        scrolled ? "py-3.5 bg-black/85 backdrop-blur-xl border-b border-white/10" : "py-5 md:py-6 bg-transparent"
       }`}
     >
-      <div className="container mx-auto px-6 max-w-[1240px] flex items-center justify-between">
+      <div className="container mx-auto px-6 max-w-[1240px] 2xl:max-w-[1400px] flex items-center justify-between">
         {/* Brand Logo */}
         <Link 
           href="/" 
           onClick={closeAllMenus}
-          className="flex items-center group relative gap-3.5 focus:outline-none" 
+          className="flex items-center group relative gap-3.5 focus-visible:ring-2 focus-visible:ring-accent rounded-lg" 
           aria-label="Revoflux Home"
         >
           <div className="relative w-8 h-8 md:w-[32px] md:h-[32px]">
@@ -94,15 +124,15 @@ export default function Navbar() {
           </span>
         </Link>
 
-        {/* Desktop Navigation */}
-        <nav className="hidden md:flex items-center gap-8 text-[14px] font-medium" aria-label="Main Navigation">
+        {/* Desktop Navigation (Shifted from md: to lg: breakpoint to prevent 768px tablet wrap) */}
+        <nav className="hidden lg:flex items-center gap-7 xl:gap-9 text-[14px] font-medium" aria-label="Main Navigation">
           {/* Solutions Dropdown */}
           <div className="relative" ref={solutionsRef}>
             <button
               type="button"
               onClick={() => setSolutionsOpen(!solutionsOpen)}
               onMouseEnter={() => setSolutionsOpen(true)}
-              className={`flex items-center gap-1.5 py-2 transition-colors ${
+              className={`flex items-center gap-1.5 py-2 transition-colors focus-visible:ring-2 focus-visible:ring-accent rounded-lg ${
                 isSolutionsActive || solutionsOpen ? "text-white" : "text-text-secondary hover:text-white"
               }`}
               aria-expanded={solutionsOpen}
@@ -170,7 +200,7 @@ export default function Navbar() {
           <Link
             href="/approach"
             onClick={closeAllMenus}
-            className={`transition-colors py-2 ${
+            className={`transition-colors py-2 focus-visible:ring-2 focus-visible:ring-accent rounded-lg ${
               pathname === "/approach" ? "text-white font-semibold" : "text-text-secondary hover:text-white"
             }`}
           >
@@ -180,7 +210,7 @@ export default function Navbar() {
           <Link
             href="/work/demonstrations"
             onClick={closeAllMenus}
-            className={`transition-colors py-2 ${
+            className={`transition-colors py-2 focus-visible:ring-2 focus-visible:ring-accent rounded-lg ${
               pathname.startsWith("/work") ? "text-white font-semibold" : "text-text-secondary hover:text-white"
             }`}
           >
@@ -190,7 +220,7 @@ export default function Navbar() {
           <Link
             href="/about"
             onClick={closeAllMenus}
-            className={`transition-colors py-2 ${
+            className={`transition-colors py-2 focus-visible:ring-2 focus-visible:ring-accent rounded-lg ${
               pathname === "/about" ? "text-white font-semibold" : "text-text-secondary hover:text-white"
             }`}
           >
@@ -200,7 +230,7 @@ export default function Navbar() {
           <Link
             href="/contact"
             onClick={closeAllMenus}
-            className={`transition-colors py-2 ${
+            className={`transition-colors py-2 focus-visible:ring-2 focus-visible:ring-accent rounded-lg ${
               pathname === "/contact" ? "text-white font-semibold" : "text-text-secondary hover:text-white"
             }`}
           >
@@ -209,20 +239,21 @@ export default function Navbar() {
         </nav>
 
         {/* Action Button */}
-        <div className="hidden md:flex items-center gap-4">
+        <div className="hidden lg:flex items-center gap-4">
           <Link
             href="/book-a-consultation"
             onClick={closeAllMenus}
-            className="px-5 py-2.5 bg-accent text-black font-bold text-[13px] rounded-xl hover:bg-accent-hover transition-all duration-300 hover:shadow-[0_0_20px_rgba(139,92,246,0.3)] active:scale-95"
+            className="px-5 py-2.5 bg-accent text-black font-bold text-[13px] rounded-xl hover:bg-accent-hover transition-all duration-300 hover:shadow-[0_0_20px_rgba(139,92,246,0.3)] active:scale-95 focus-visible:ring-2 focus-visible:ring-accent"
           >
             Book a Consultation
           </Link>
         </div>
 
-        {/* Mobile Toggle Button */}
+        {/* Mobile / Tablet Toggle Button (Displays below 1024px) */}
         <button
+          ref={toggleButtonRef}
           type="button"
-          className="md:hidden text-white p-2 rounded-lg hover:bg-white/5 focus:outline-none"
+          className="lg:hidden text-white p-2 rounded-lg hover:bg-white/5 focus-visible:ring-2 focus-visible:ring-accent"
           onClick={() => setIsOpen(!isOpen)}
           aria-expanded={isOpen}
           aria-label={isOpen ? "Close main menu" : "Open main menu"}
@@ -231,7 +262,7 @@ export default function Navbar() {
         </button>
       </div>
 
-      {/* Mobile Navigation Drawer */}
+      {/* Mobile / Tablet Navigation Drawer */}
       <AnimatePresence>
         {isOpen && (
           <motion.div
@@ -239,7 +270,7 @@ export default function Navbar() {
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.3 }}
-            className="md:hidden bg-black/95 border-b border-white/10 px-6 py-8 overflow-y-auto max-h-[85vh] backdrop-blur-2xl"
+            className="lg:hidden bg-black/98 border-b border-white/10 px-6 py-8 overflow-y-auto max-h-[85vh] backdrop-blur-2xl"
           >
             <div className="flex flex-col gap-5 text-lg font-display">
               <Link
@@ -251,7 +282,7 @@ export default function Navbar() {
               </Link>
 
               <div className="pt-2 pb-2 border-y border-white/5">
-                <span className="text-xs uppercase font-mono tracking-widest text-text-muted block mb-3">Solutions</span>
+                <span className="text-xs uppercase font-mono tracking-widest text-text-muted block mb-3 font-semibold">Solutions</span>
                 <div className="space-y-3 pl-2">
                   <Link
                     href="/solutions"

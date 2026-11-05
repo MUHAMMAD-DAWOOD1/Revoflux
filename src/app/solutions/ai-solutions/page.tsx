@@ -46,7 +46,7 @@ export default function AISolutionsPage() {
     <div className="flex flex-col min-h-screen bg-black">
       {/* Hero Section */}
       <section className="relative py-24 md:py-32 border-b border-white/5 overflow-hidden">
-        <div className="container mx-auto px-6 max-w-[1240px] relative z-10">
+        <div className="container mx-auto px-6 max-w-[1240px] 2xl:max-w-[1400px] relative z-10">
           <div className="max-w-3xl">
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-accent/25 bg-accent/10 text-accent font-mono text-[11px] mb-8 uppercase tracking-widest font-semibold">
               <Sparkles size={13} />
@@ -79,7 +79,7 @@ export default function AISolutionsPage() {
 
       {/* Core Capabilities */}
       <section className="py-24 border-b border-white/5">
-        <div className="container mx-auto px-6 max-w-[1240px]">
+        <div className="container mx-auto px-6 max-w-[1240px] 2xl:max-w-[1400px]">
           <div className="max-w-2xl mb-16">
             <span className="text-accent font-mono text-xs uppercase tracking-widest font-semibold block mb-4">
               Capabilities
@@ -108,7 +108,7 @@ export default function AISolutionsPage() {
 
       {/* AI Boundary & Security Guardrails */}
       <section className="py-24 border-b border-white/5">
-        <div className="container mx-auto px-6 max-w-[1240px]">
+        <div className="container mx-auto px-6 max-w-[1240px] 2xl:max-w-[1400px]">
           <div className="bg-[#050505] border border-white/10 rounded-3xl p-8 md:p-14">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
               <div className="lg:col-span-6">
@@ -143,7 +143,7 @@ export default function AISolutionsPage() {
 
       {/* Bottom Conversion */}
       <section className="py-24">
-        <div className="container mx-auto px-6 max-w-[1240px] text-center">
+        <div className="container mx-auto px-6 max-w-[1240px] 2xl:max-w-[1400px] text-center">
           <h2 className="font-display font-[900] text-white text-[32px] md:text-[44px] mb-6 tracking-tight">
             Ready to Deploy Custom AI into Your Operations?
           </h2>

@@ -85,7 +85,7 @@ export default function ContactPage() {
     <div className="flex flex-col min-h-screen bg-black">
       {/* Page Hero */}
       <section className="relative py-20 md:py-28 border-b border-white/5 overflow-hidden">
-        <div className="container mx-auto px-6 max-w-[1240px] text-center max-w-3xl">
+        <div className="container mx-auto px-6 max-w-[1240px] 2xl:max-w-[1400px] text-center max-w-3xl">
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-accent/25 bg-accent/10 text-accent font-mono text-[11px] mb-6 uppercase tracking-widest font-semibold">
             <MessageSquare size={13} />
             <span>Start a Project</span>
@@ -100,7 +100,7 @@ export default function ContactPage() {
       </section>
 
       {/* Main Grid */}
-      <section className="py-20 container mx-auto px-6 max-w-[1240px] flex-grow">
+      <section className="py-20 container mx-auto px-6 max-w-[1240px] 2xl:max-w-[1400px] flex-grow">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
           
           {/* Left Column: Direct Strategy Call & Details (Span 5) */}

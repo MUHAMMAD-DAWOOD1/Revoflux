@@ -22,7 +22,7 @@ export default function BookConsultationPage() {
     <div className="flex flex-col min-h-screen bg-black">
       {/* Hero Section */}
       <section className="relative py-16 md:py-24 border-b border-white/5 overflow-hidden">
-        <div className="container mx-auto px-6 max-w-[1240px] text-center max-w-3xl">
+        <div className="container mx-auto px-6 max-w-[1240px] 2xl:max-w-[1400px] text-center max-w-3xl">
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-accent/25 bg-accent/10 text-accent font-mono text-[11px] mb-6 uppercase tracking-widest font-semibold">
             <Calendar size={13} />
             <span>Direct Technical Consultation</span>

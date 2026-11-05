@@ -37,7 +37,8 @@ const demonstrations = [
 export default function Works() {
   return (
     <section id="work" className="relative w-full py-28 bg-black overflow-hidden border-b border-white/5">
-      <div className="container mx-auto px-6 max-w-[1240px]">
+      <div className="absolute top-1/3 right-0 w-96 h-96 bg-accent/5 blur-[120px] pointer-events-none rounded-full" aria-hidden="true" />
+      <div className="container mx-auto px-6 max-w-[1240px] 2xl:max-w-[1400px]">
         {/* Section Header */}
         <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-16 gap-6">
           <div className="max-w-2xl">

@@ -33,7 +33,7 @@ const commitments = [
 export default function Testimonials() {
   return (
     <section id="governance" className="relative w-full py-28 bg-black overflow-hidden border-b border-white/5">
-      <div className="container mx-auto px-6 max-w-[1240px]">
+      <div className="container mx-auto px-6 max-w-[1240px] 2xl:max-w-[1400px]">
         <div className="flex flex-col items-center text-center max-w-3xl mx-auto mb-20">
           <div className="inline-flex items-center px-4 py-1.5 rounded-full border border-white/10 bg-white/5 text-accent font-mono text-[11px] mb-6 tracking-widest uppercase font-semibold">
             Engineering Governance

@@ -69,7 +69,7 @@ export default function SolutionsPage() {
     <div className="flex flex-col min-h-screen bg-black">
       {/* Hero Section */}
       <section className="relative py-24 md:py-32 border-b border-white/5 overflow-hidden">
-        <div className="container mx-auto px-6 max-w-[1240px] relative z-10">
+        <div className="container mx-auto px-6 max-w-[1240px] 2xl:max-w-[1400px] relative z-10">
           <div className="max-w-3xl">
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-accent/25 bg-accent/10 text-accent font-mono text-[11px] mb-8 uppercase tracking-widest font-semibold">
               <Layers size={13} />
@@ -87,7 +87,7 @@ export default function SolutionsPage() {
 
       {/* Solutions Cards List */}
       <section className="py-24 border-b border-white/5">
-        <div className="container mx-auto px-6 max-w-[1240px] space-y-16">
+        <div className="container mx-auto px-6 max-w-[1240px] 2xl:max-w-[1400px] space-y-16">
           {solutionFamilies.map((family) => {
             const Icon = family.icon;
             return (
@@ -165,7 +165,7 @@ export default function SolutionsPage() {
 
       {/* Cross-Discipline Technical Governance */}
       <section className="py-24">
-        <div className="container mx-auto px-6 max-w-[1240px]">
+        <div className="container mx-auto px-6 max-w-[1240px] 2xl:max-w-[1400px]">
           <div className="bg-[#050505] border border-white/10 rounded-3xl p-8 md:p-14 text-center max-w-4xl mx-auto">
             <div className="w-12 h-12 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-accent mx-auto mb-6">
               <ShieldCheck size={24} />

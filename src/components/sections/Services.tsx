@@ -29,7 +29,8 @@ interface FeatureRowProps {
 export default function Services() {
   return (
     <section id="services" className="relative w-full py-28 bg-black overflow-hidden border-b border-white/5">
-      <div className="container mx-auto px-6 max-w-[1240px]">
+      <div className="absolute top-1/2 left-0 w-96 h-96 bg-accent/5 blur-[120px] pointer-events-none rounded-full" aria-hidden="true" />
+      <div className="container mx-auto px-6 max-w-[1240px] 2xl:max-w-[1400px]">
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto mb-24">
           <div className="inline-flex items-center px-4 py-1.5 rounded-full border border-white/10 bg-white/5 text-accent font-mono text-[11px] mb-6 tracking-widest uppercase font-semibold">

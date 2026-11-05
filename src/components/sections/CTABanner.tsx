@@ -6,7 +6,7 @@ import { ArrowRight, Calendar, MessageSquare } from "lucide-react";
 export default function CTABanner() {
   return (
     <section className="relative w-full py-28 bg-black overflow-hidden border-b border-white/5">
-      <div className="container mx-auto px-6 max-w-[1240px]">
+      <div className="container mx-auto px-6 max-w-[1240px] 2xl:max-w-[1400px]">
         <div className="relative bg-gradient-to-br from-accent via-purple-700 to-indigo-900 rounded-[32px] p-10 md:p-20 overflow-hidden flex flex-col items-center text-center shadow-2xl">
           {/* Subtle concentric rings */}
           <div className="absolute inset-0 z-0 opacity-15 pointer-events-none">
