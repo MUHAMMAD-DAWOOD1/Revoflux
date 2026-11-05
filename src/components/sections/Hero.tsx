@@ -155,9 +155,9 @@ export default function Hero() {
         aria-hidden="true"
       />
 
-      {/* Hero Visual Artwork: Seamlessly blended on the right side */}
+      {/* Hero Visual Artwork: Seamlessly blended on the right side, starting aligned with headline */}
       <div 
-        className="absolute right-0 top-0 bottom-0 w-full md:w-3/4 lg:w-3/5 xl:w-1/2 pointer-events-none z-0 overflow-hidden"
+        className="absolute right-0 top-4 sm:top-8 lg:top-12 bottom-0 w-full md:w-3/4 lg:w-7/12 xl:w-1/2 pointer-events-none z-0 overflow-hidden"
         aria-hidden="true"
       >
         <Image
@@ -166,12 +166,12 @@ export default function Hero() {
           fill
           priority
           sizes="(max-width: 768px) 100vw, 55vw"
-          className="object-cover object-right opacity-50 sm:opacity-65 lg:opacity-90"
+          className="object-cover object-right-top opacity-60 sm:opacity-80 lg:opacity-100"
         />
-        {/* Soft edge gradients for natural, seamless blending into pitch black */}
-        <div className="absolute inset-0 bg-gradient-to-r from-black via-black/75 to-transparent lg:via-black/50" />
-        <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-black/60" />
-        <div className="absolute inset-0 bg-gradient-to-b from-black via-transparent to-black" />
+        {/* Smooth feathered edge gradients for natural blend into pitch black without dulling colors */}
+        <div className="absolute inset-0 bg-gradient-to-r from-black via-black/60 to-transparent lg:via-black/25" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-black/30" />
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black" />
       </div>
 
       {/* Ambient purple glow behind right side visual */}
