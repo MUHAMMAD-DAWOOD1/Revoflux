@@ -3,8 +3,8 @@
 import { useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
-import Image from "next/image";
 import { ArrowRight, Sparkles } from "lucide-react";
+import HeroShowcase from "./HeroShowcase";
 
 interface StarPoint {
   x: number;
@@ -155,113 +155,104 @@ export default function Hero() {
         aria-hidden="true"
       />
 
-      {/* Hero Visual Artwork: Seamlessly blended on the right side, starting aligned with headline */}
-      <div 
-        className="absolute right-0 top-4 sm:top-8 lg:top-12 bottom-0 w-full md:w-3/4 lg:w-7/12 xl:w-1/2 pointer-events-none z-0 overflow-hidden"
-        aria-hidden="true"
-      >
-        <Image
-          src="/hero-concept.jpg"
-          alt="Revoflux AI Intelligent Software & Workflow Automation"
-          fill
-          priority
-          sizes="(max-width: 768px) 100vw, 55vw"
-          className="object-cover object-right-top opacity-60 sm:opacity-80 lg:opacity-100"
-        />
-        {/* Smooth feathered edge gradients for natural blend into pitch black without dulling colors */}
-        <div className="absolute inset-0 bg-gradient-to-r from-black via-black/60 to-transparent lg:via-black/25" />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-black/30" />
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black" />
-      </div>
-
       {/* Ambient purple glow behind right side visual */}
       <div 
-        className="absolute top-1/3 right-10 w-[500px] h-[400px] bg-accent/15 blur-[140px] pointer-events-none rounded-full"
+        className="absolute top-1/4 right-0 w-[550px] h-[550px] bg-accent/15 blur-[160px] pointer-events-none rounded-full"
         aria-hidden="true"
       />
 
-      {/* Hero Foreground Content */}
-      <div className="container mx-auto px-6 max-w-[1240px] 2xl:max-w-[1400px] relative z-10">
-        <div className="max-w-2xl lg:max-w-xl xl:max-w-2xl text-left">
+      {/* Hero Foreground Content & Vector-Sharp UI Showcase */}
+      <div className="container mx-auto px-6 max-w-[1240px] 2xl:max-w-[1440px] relative z-10">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 xl:gap-14 items-center">
           
-          {/* Category Badge */}
-          <motion.div 
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.6 }}
-            className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-accent/25 bg-accent/10 text-accent font-mono text-[10px] sm:text-[11px] mb-5 sm:mb-6 tracking-[0.18em] uppercase font-semibold"
-          >
-            <Sparkles size={12} className="text-accent shrink-0" />
-            <span>AI Systems &amp; Software Engineering</span>
-          </motion.div>
-
-          {/* Main Headline */}
-          <motion.h1 
-            initial={{ opacity: 0, y: 15 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.1 }}
-            className="font-display font-[900] text-white leading-[1.08] mb-5 sm:mb-6 tracking-tight text-[34px] sm:text-[46px] md:text-[56px] lg:text-[60px] xl:text-[68px]"
-          >
-            Intelligent Software &amp; AI Solutions{" "}
-            <span className="text-gradient block sm:inline">For Modern Businesses.</span>
-          </motion.h1>
-
-          {/* Subheading */}
-          <motion.p 
-            initial={{ opacity: 0, y: 15 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            className="text-[16px] sm:text-[18px] lg:text-[19px] font-body text-text-secondary mb-8 sm:mb-10 leading-relaxed max-w-xl"
-          >
-            We architect and deploy autonomous AI systems, scalable software platforms, and resilient automated workflows that eliminate operational bottlenecks and drive durable business leverage.
-          </motion.p>
-
-          {/* CTA Group */}
-          <motion.div
-            initial={{ opacity: 0, y: 15 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.3 }}
-            className="flex flex-col sm:flex-row items-center gap-3.5 w-full sm:w-auto"
-          >
-            <Link 
-              href="/book-a-consultation"
-              className="w-full sm:w-auto px-7 py-3.5 sm:py-4 bg-accent text-black font-extrabold text-[14px] sm:text-[15px] rounded-xl flex items-center justify-center gap-2 hover:bg-accent-hover transition-all shadow-[0_0_25px_rgba(139,92,246,0.25)] active:scale-95 focus-visible:ring-2 focus-visible:ring-accent"
+          {/* Left Column: Headline, Description, CTAs, Trust Metrics */}
+          <div className="lg:col-span-7 xl:col-span-6 text-left">
+            
+            {/* Category Badge */}
+            <motion.div 
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.6 }}
+              className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-accent/25 bg-accent/10 text-accent font-mono text-[10px] sm:text-[11px] mb-5 sm:mb-6 tracking-[0.18em] uppercase font-semibold"
             >
-              <span>Book a Consultation</span>
-              <ArrowRight size={17} />
-            </Link>
-            <Link 
-              href="/solutions"
-              className="w-full sm:w-auto px-7 py-3.5 sm:py-4 border border-white/20 text-white font-semibold text-[14px] sm:text-[15px] rounded-xl hover:bg-white/5 transition-all text-center focus-visible:ring-2 focus-visible:ring-accent"
-            >
-              Explore Solutions
-            </Link>
-          </motion.div>
+              <Sparkles size={12} className="text-accent shrink-0" />
+              <span>AI Systems &amp; Software Engineering</span>
+            </motion.div>
 
-          {/* Micro Trust Indicators */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.8, delay: 0.4 }}
-            className="mt-8 sm:mt-12 pt-6 sm:pt-8 border-t border-white/10 grid grid-cols-2 sm:grid-cols-4 gap-4 text-left max-w-xl"
-          >
-            <div>
-              <span className="block text-accent font-mono text-[10px] sm:text-[11px] uppercase tracking-wider font-bold mb-0.5">Architecture</span>
-              <span className="text-white text-xs font-medium">Production-Grade</span>
-            </div>
-            <div>
-              <span className="block text-accent font-mono text-[10px] sm:text-[11px] uppercase tracking-wider font-bold mb-0.5">Privacy</span>
-              <span className="text-white text-xs font-medium">Zero Data Leakage</span>
-            </div>
-            <div>
-              <span className="block text-accent font-mono text-[10px] sm:text-[11px] uppercase tracking-wider font-bold mb-0.5">Delivery</span>
-              <span className="text-white text-xs font-medium">Agile Milestones</span>
-            </div>
-            <div>
-              <span className="block text-accent font-mono text-[10px] sm:text-[11px] uppercase tracking-wider font-bold mb-0.5">Integration</span>
-              <span className="text-white text-xs font-medium">Full Stack APIs</span>
-            </div>
-          </motion.div>
+            {/* Main Headline */}
+            <motion.h1 
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.1 }}
+              className="font-display font-[900] text-white leading-[1.08] mb-5 sm:mb-6 tracking-tight text-[34px] sm:text-[46px] md:text-[54px] lg:text-[56px] xl:text-[64px]"
+            >
+              Intelligent Software &amp; AI Solutions{" "}
+              <span className="text-gradient block sm:inline">For Modern Businesses.</span>
+            </motion.h1>
+
+            {/* Subheading */}
+            <motion.p 
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+              className="text-[16px] sm:text-[18px] lg:text-[19px] font-body text-text-secondary mb-8 sm:mb-10 leading-relaxed max-w-xl"
+            >
+              We architect and deploy autonomous AI systems, scalable software platforms, and resilient automated workflows that eliminate operational bottlenecks and drive durable business leverage.
+            </motion.p>
+
+            {/* CTA Group */}
+            <motion.div
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.3 }}
+              className="flex flex-col sm:flex-row items-center gap-3.5 w-full sm:w-auto"
+            >
+              <Link 
+                href="/book-a-consultation"
+                className="w-full sm:w-auto px-7 py-3.5 sm:py-4 bg-accent text-black font-extrabold text-[14px] sm:text-[15px] rounded-xl flex items-center justify-center gap-2 hover:bg-accent-hover transition-all shadow-[0_0_25px_rgba(139,92,246,0.25)] active:scale-95 focus-visible:ring-2 focus-visible:ring-accent"
+              >
+                <span>Book a Consultation</span>
+                <ArrowRight size={17} />
+              </Link>
+              <Link 
+                href="/solutions"
+                className="w-full sm:w-auto px-7 py-3.5 sm:py-4 border border-white/20 text-white font-semibold text-[14px] sm:text-[15px] rounded-xl hover:bg-white/5 transition-all text-center focus-visible:ring-2 focus-visible:ring-accent"
+              >
+                Explore Solutions
+              </Link>
+            </motion.div>
+
+            {/* Micro Trust Indicators */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.8, delay: 0.4 }}
+              className="mt-8 sm:mt-12 pt-6 sm:pt-8 border-t border-white/10 grid grid-cols-2 sm:grid-cols-4 gap-4 text-left max-w-xl"
+            >
+              <div>
+                <span className="block text-accent font-mono text-[10px] sm:text-[11px] uppercase tracking-wider font-bold mb-0.5">Architecture</span>
+                <span className="text-white text-xs font-medium">Production-Grade</span>
+              </div>
+              <div>
+                <span className="block text-accent font-mono text-[10px] sm:text-[11px] uppercase tracking-wider font-bold mb-0.5">Privacy</span>
+                <span className="text-white text-xs font-medium">Zero Data Leakage</span>
+              </div>
+              <div>
+                <span className="block text-accent font-mono text-[10px] sm:text-[11px] uppercase tracking-wider font-bold mb-0.5">Delivery</span>
+                <span className="text-white text-xs font-medium">Agile Milestones</span>
+              </div>
+              <div>
+                <span className="block text-accent font-mono text-[10px] sm:text-[11px] uppercase tracking-wider font-bold mb-0.5">Integration</span>
+                <span className="text-white text-xs font-medium">Full Stack APIs</span>
+              </div>
+            </motion.div>
+
+          </div>
+
+          {/* Right Column: Code-Driven High-Fidelity Showcase (Zero Blur, No Image Cut-Off) */}
+          <div className="lg:col-span-5 xl:col-span-6 w-full flex items-center justify-center lg:justify-end mt-4 lg:mt-0">
+            <HeroShowcase />
+          </div>
 
         </div>
       </div>
